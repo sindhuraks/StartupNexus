@@ -1,7 +1,6 @@
 .horizontalbar {
-  /*background-color: rgb(167, 86, 244);*/
   backdrop-filter: blur(16px) saturate(180%);
-  background-color: rgba(0, 17, 82, 0.75);
+  background-color: rgba(2, 4, 32, 0.75);
   height: 75px;
   padding-left: 30px;
   padding-top: 15px;
@@ -11,6 +10,7 @@
 
 .logoText {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: #00DC82;
 }
 
 .container {
@@ -18,12 +18,19 @@
   min-height: calc(100vh - 75px);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .leftSection {
   flex: 1;
-  /*background-color: #494850;*/
-  background: linear-gradient(to bottom, rgb(108, 0, 162), rgb(0, 17, 82));
+  background: linear-gradient(
+    to bottom,
+    hsl(155, 59%, 43%) 0%,
+    #0D4D3E 5%, 
+    #072239 35%, 
+    #072239 65%
+  );
   color: #eeeeee;
   display: flex;
   flex-direction: column;
@@ -34,11 +41,67 @@
 
 .rightSection {
   flex: 1;
-  /*background-color: #c899f4;*/
-  background: linear-gradient(to bottom, rgb(0, 17, 82), rgb(108, 0, 162));
+  background: linear-gradient(
+    to bottom,
+    hsl(155, 59%, 43%) 0%,
+    #0D4D3E 5%, 
+    #072239 35%, 
+    #072239 65%
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+}
+
+.loginButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 50%;
+  max-width: 400px;
+  background: linear-gradient(
+    to bottom,
+    #072239 35%, 
+    #072239 65%
+  );
+  color: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #42f89a;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.loginButton:hover {
+  background-color: #242424;
+  border-color: #42f89a;
+}
+
+.rightText {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #ffffff;
+  align-self: flex-start;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  padding-left: 85px;
+}
+
+.signupButton {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #42f89a;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-left: 5px;
+  font-size: 16px;
 }
