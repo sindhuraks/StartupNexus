@@ -9,12 +9,12 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-type application struct {
-	config config
-}
-
 type config struct {
 	addr string
+}
+
+type application struct {
+	config config
 }
 
 func (app *application) mount() http.Handler {
@@ -23,16 +23,14 @@ func (app *application) mount() http.Handler {
 	r.Use(middleware.Logger)
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
-	//timeout middleware
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	r.Route("/v1", func(r chi.Router) {
-		r.Get("/health", app.healthcheckHandler)
+		r.Post("/signup", app.signupHandler)
 		r.Get("/login", app.loginHandler)
 	})
 
 	return r
-
 }
 
 func (app *application) run(mux http.Handler) error {

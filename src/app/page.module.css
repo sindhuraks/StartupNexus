@@ -1,0 +1,44 @@
+.horizontalbar {
+  /*background-color: rgb(167, 86, 244);*/
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(0, 17, 82, 0.75);
+  height: 75px;
+  padding-left: 30px;
+  padding-top: 15px;
+  size: 150px;
+  color: #ffffff;
+}
+
+.logoText {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.container {
+  display: flex;
+  min-height: calc(100vh - 75px);
+  position: relative;
+  overflow: hidden;
+}
+
+.leftSection {
+  flex: 1;
+  /*background-color: #494850;*/
+  background: linear-gradient(to bottom, rgb(108, 0, 162), rgb(0, 17, 82));
+  color: #eeeeee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.rightSection {
+  flex: 1;
+  /*background-color: #c899f4;*/
+  background: linear-gradient(to bottom, rgb(0, 17, 82), rgb(108, 0, 162));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
