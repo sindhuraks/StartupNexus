@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-		
 	"golang.org/x/crypto/bcrypt"
-	
 )
 
 // Request structure
@@ -56,4 +54,17 @@ func (app *application) signupHandler(w http.ResponseWriter, r *http.Request) {
 	response := map[string]string{"message": "User registered successfully, pending verification"}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
+}
+
+// getting the users from the database
+func (app *application) getUsers(w http.ResponseWriter, r *http.Request) {
+	var users []User
+	DB.Find(&users)
+	//remove the password from the response
+	for i := range users {
+		users[i].Password = ""
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
 }
