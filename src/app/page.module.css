@@ -6,11 +6,17 @@
   padding-top: 15px;
   size: 150px;
   color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a floating effect */
 }
 
 .logoText {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   color: #00DC82;
+  font-size: 28px; /* Make the logo text more prominent */
+  font-weight: bold;
 }
 
 .container {
@@ -53,6 +59,7 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  text-align: center;
 }
 
 .loginButton {
@@ -74,13 +81,24 @@
   font-size: 18px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .loginButton:hover {
-  background-color: #242424;
-  border-color: #42f89a;
+  background: linear-gradient(to right, #42f89a, #00DC82); /* Smooth gradient transition on hover */
+  color: #fff;
+  border-color: #00DC82; /* Border color change */
+  transform: translateY(-4px); /* Slight lifting effect */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow for floating effect */
+}
+
+.loginButton svg {
+  transition: transform 0.3s ease-in-out;
+}
+
+.loginButton:hover svg {
+  transform: translateX(5px); /* Slightly move the icon on hover */
 }
 
 .rightText {
@@ -104,4 +122,19 @@
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   margin-left: 5px;
   font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.signupButton:hover {
+  color: #00DC82; /* Change text color on hover */
+}
+
+/* styles.module.css */
+.sectionImage {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  object-fit: cover; /* This ensures the image doesn't get stretched */
 }
