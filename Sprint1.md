@@ -1,6 +1,5 @@
 ## Front-end
-Video Demo - https://uflorida-my.sharepoint.com/my?id=%2Fpersonal%2Fvarunaiyaswamyka%5Fufl%5Fedu%2FDocuments%2FSprint1%5FDev%5FTeam%5FVideos%2FFront%20End%20Video&ga=1
-
+Video Demo - https://uflorida-my.sharepoint.com/:v:/g/personal/varunaiyaswamyka_ufl_edu/Ed8bspvh5BpAssvrftRkMQ8B0AeDHBh7d1Ed_0z69Vft4A?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=gAEpXI
 ## User stories
 - Setup Signup and Login UI
 - Setup OAuth Integration
@@ -25,7 +24,7 @@ Video Demo - https://uflorida-my.sharepoint.com/my?id=%2Fpersonal%2Fvarunaiyaswa
 - Extending Session Persistence, the current session expiration is set to 3 minutes for security reasons, but adjustments may be needed for better user experience.
 
 ## Back-end
-Video Demo - https://uflorida-my.sharepoint.com/my?id=%2Fpersonal%2Fvarunaiyaswamyka%5Fufl%5Fedu%2FDocuments%2FSprint1%5FDev%5FTeam%5FVideos%2FBackend%20Video&ga=1
+Video Demo - https://uflorida-my.sharepoint.com/:v:/g/personal/varunaiyaswamyka_ufl_edu/EfPK0_FMcDlFsMTOv77LWsMBzbITMjdufqTm0hsBWmDVxQ?e=ksyBz0&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 ## User stories
 - Role-Based Signup:
 As a user (Entrepreneur, Investor, or Mentor), I want to sign up with role-specific details so that my account reflects my needs on the platform.
