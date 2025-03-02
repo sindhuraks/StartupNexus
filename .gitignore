@@ -10,3 +10,4 @@ yarn-error.log
 bin/
 env.local
 .next/
+cypress.env.json
