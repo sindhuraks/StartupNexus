@@ -18,18 +18,13 @@ type User struct {
 // Entrepreneurs Table
 type Entrepreneur struct {
 	gorm.Model
-	UserID      uint    `json:"user_id"`
-	StartupName string  `json:"startup_name"`
-	Industry    string  `json:"industry"`
-	Description string  `json:"description"`
-	Budget      float64 `json:"budget"`
-	Timeframe   string  `json:"timeframe"`
+	UserID uint `json:"user_id" gorm:"not null;unique;foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 }
 
 // Investors Table
 type Investor struct {
 	gorm.Model
-	UserID              uint   `json:"user_id"`
+	UserID              uint   `json:"user_id" gorm:"not null;unique;foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 	InvestmentRange     string `json:"investment_range"`
 	PreferredIndustries string `json:"preferred_industries"`
 	ExperienceYears     int    `json:"experience_years"`
@@ -39,9 +34,28 @@ type Investor struct {
 // Mentors Table
 type Mentor struct {
 	gorm.Model
-	UserID            uint   `json:"user_id"`
+	UserID            uint   `json:"user_id" gorm:"not null;unique;foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 	Expertise         string `json:"expertise"`
 	PastMentorships   string `json:"past_mentorships"`
 	YearsOfExperience int    `json:"years_of_experience"`
 	VerificationProof string `json:"verification_proof"`
+}
+
+// Startups Table
+type Startup struct {
+	gorm.Model
+	EntrepreneurID uint    `json:"entrepreneur_id" gorm:"not null;foreignKey:EntrepreneurID;constraint:OnDelete:CASCADE;"`
+	StartupName    string  `json:"startup_name" gorm:"not null"`
+	Industry       string  `json:"industry"`
+	Description    string  `json:"description"`
+	Budget         float64 `json:"budget"`
+	Timeframe      string  `json:"timeframe"`
+}
+
+// Connections Table (New)
+type Connection struct {
+	gorm.Model
+	SenderID   uint   `json:"sender_id" gorm:"not null"`       // Investor or Mentor
+	ReceiverID uint   `json:"receiver_id" gorm:"not null"`     // Entrepreneur
+	Status     string `json:"status" gorm:"default:'pending'"` // pending, accepted, rejected
 }
