@@ -28,7 +28,6 @@ type Investor struct {
 	InvestmentRange     string `json:"investment_range"`
 	PreferredIndustries string `json:"preferred_industries"`
 	ExperienceYears     int    `json:"experience_years"`
-	VerificationProof   string `json:"verification_proof"`
 }
 
 // Mentors Table
@@ -37,7 +36,7 @@ type Mentor struct {
 	UserID            uint   `json:"user_id" gorm:"not null;unique;foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 	Expertise         string `json:"expertise"`
 	PastMentorships   string `json:"past_mentorships"`
-	YearsOfExperience int    `json:"years_of_experience"`
+	ExperienceYears   int    `json:"years_of_experience"`
 	VerificationProof string `json:"verification_proof"`
 }
 
@@ -45,12 +44,12 @@ type Mentor struct {
 type Startup struct {
 	gorm.Model
 	EntrepreneurEmail string  `json:"entrepreneur_email"` // For easier retrieval
-	EntrepreneurID uint    `json:"entrepreneur_id" gorm:"not null;foreignKey:EntrepreneurID;constraint:OnDelete:CASCADE;"`
-	StartupName    string  `json:"startup_name" gorm:"not null"`
-	Industry       string  `json:"industry"`
-	Description    string  `json:"description"`
-	Budget         float64 `json:"budget"`
-	Timeframe      string  `json:"timeframe"`
+	EntrepreneurID    uint    `json:"entrepreneur_id" gorm:"not null;foreignKey:EntrepreneurID;constraint:OnDelete:CASCADE;"`
+	StartupName       string  `json:"startup_name" gorm:"not null"`
+	Industry          string  `json:"industry"`
+	Description       string  `json:"description"`
+	Budget            float64 `json:"budget"`
+	Timeframe         string  `json:"timeframe"`
 }
 
 // Connections Table (New)

@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 // Request structure
@@ -15,6 +15,7 @@ type SignupRequest struct {
 	Location          string `json:"location"`
 	LinkedInProfile   string `json:"linkedin_profile"`
 	VerificationProof string `json:"verification_proof,omitempty"`
+	Interests         string `json:"interest,omitempty"`
 
 	// Role-specific fields
 	StartupName         string  `json:"startup_name,omitempty"`
@@ -56,8 +57,14 @@ func (app *application) checkUserHandler(w http.ResponseWriter, r *http.Request)
 	// User exists → Frontend will redirect to Dashboard
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"exists": true,
-		"role":   user.Role,
+		"exists":              true,
+		"role":                user.Role,
+		"full_name":           user.FullName,
+		"email":               user.Email,
+		"phone_number":        user.PhoneNumber,
+		"location":            user.Location,
+		"linkedin":            user.LinkedIn,
+		"verification_status": user.VerificationStatus,
 	})
 }
 
@@ -138,7 +145,6 @@ func (app *application) signupHandler(w http.ResponseWriter, r *http.Request) {
 			InvestmentRange:     req.InvestmentRange,
 			PreferredIndustries: req.PreferredIndustries,
 			ExperienceYears:     req.ExperienceYears,
-			VerificationProof:   req.VerificationProof,
 		}
 		DB.Create(&investor)
 
@@ -147,7 +153,7 @@ func (app *application) signupHandler(w http.ResponseWriter, r *http.Request) {
 			UserID:            user.ID,
 			Expertise:         req.Expertise,
 			PastMentorships:   req.PastMentorships,
-			YearsOfExperience: req.YearsOfExperience,
+			ExperienceYears:   req.YearsOfExperience,
 			VerificationProof: req.VerificationProof,
 		}
 		DB.Create(&mentor)
