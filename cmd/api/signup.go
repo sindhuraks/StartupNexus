@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"fmt"
 )
 
 // Request structure
@@ -156,5 +157,6 @@ func (app *application) signupHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"status":  "success",
 		"message": "User registered successfully! Please verify your account.",
+		"user_id": fmt.Sprintf("%d", user.ID),
 	})
 }
