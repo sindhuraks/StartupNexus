@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"	
 )
 
 type config struct {
@@ -24,6 +25,15 @@ func (app *application) mount() http.Handler {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Timeout(60 * time.Second))
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"https://*", "http://*"}, // Allow all origins (or specify your frontend URL, e.g., "http://localhost:3000")
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum value not ignored by browsers
+	}))
+
 
 	r.Route("/v1", func(r chi.Router) {
 		r.Post("/signup", app.signupHandler)
@@ -34,9 +44,11 @@ func (app *application) mount() http.Handler {
 		r.Delete("/connection/reject/{id}", app.rejectConnectionHandler)
 		r.Get("/connection/my", app.getAcceptedConnectionsHandler)
 		r.Get("/startup/all", app.getAllStartupsHandler)
+		r.Get(("/startup/user"), app.getStartupsByUserHandler)
 		r.Post("/startup/insert", app.insertStartupHandler)
 		r.Put("/startup/update", app.updateStartupHandler)
 		r.Delete("/startup/delete", app.deleteStartupHandler)
+
 	})
 
 	return r
