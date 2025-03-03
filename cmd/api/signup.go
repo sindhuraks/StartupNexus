@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"fmt"
 )
 
 // Request structure
@@ -60,7 +61,6 @@ func (app *application) checkUserHandler(w http.ResponseWriter, r *http.Request)
 	})
 }
 
-// Signup API
 func (app *application) signupHandler(w http.ResponseWriter, r *http.Request) {
 	var req SignupRequest
 
@@ -119,16 +119,18 @@ func (app *application) signupHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		DB.Create(&entrepreneur)
 
-		// Store startup details separately
-		startup := Startup{
-			EntrepreneurID: entrepreneur.ID,
-			StartupName:    req.StartupName,
-			Industry:       req.Industry,
-			Description:    req.Description,
-			Budget:         req.Budget,
-			Timeframe:      req.Timeframe,
+		// **Store startup details ONLY if provided**
+		if req.StartupName != "" && req.Industry != "" {
+			startup := Startup{
+				EntrepreneurID: entrepreneur.ID,
+				StartupName:    req.StartupName,
+				Industry:       req.Industry,
+				Description:    req.Description,
+				Budget:         req.Budget,
+				Timeframe:      req.Timeframe,
+			}
+			DB.Create(&startup)
 		}
-		DB.Create(&startup)
 
 	case "Investor":
 		investor := Investor{
@@ -155,5 +157,6 @@ func (app *application) signupHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"status":  "success",
 		"message": "User registered successfully! Please verify your account.",
+		"user_id": fmt.Sprintf("%d", user.ID),
 	})
 }

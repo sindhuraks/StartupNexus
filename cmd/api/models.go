@@ -44,6 +44,7 @@ type Mentor struct {
 // Startups Table
 type Startup struct {
 	gorm.Model
+	EntrepreneurEmail string  `json:"entrepreneur_email"` // For easier retrieval
 	EntrepreneurID uint    `json:"entrepreneur_id" gorm:"not null;foreignKey:EntrepreneurID;constraint:OnDelete:CASCADE;"`
 	StartupName    string  `json:"startup_name" gorm:"not null"`
 	Industry       string  `json:"industry"`

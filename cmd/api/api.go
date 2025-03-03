@@ -34,6 +34,9 @@ func (app *application) mount() http.Handler {
 		r.Delete("/connection/reject/{id}", app.rejectConnectionHandler)
 		r.Get("/connection/my", app.getAcceptedConnectionsHandler)
 		r.Get("/startup/all", app.getAllStartupsHandler)
+		r.Post("/startup/insert", app.insertStartupHandler)
+		r.Put("/startup/update", app.updateStartupHandler)
+		r.Delete("/startup/delete", app.deleteStartupHandler)
 	})
 
 	return r
