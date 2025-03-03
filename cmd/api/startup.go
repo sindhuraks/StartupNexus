@@ -183,3 +183,51 @@ func (app *application) deleteStartupHandler(w http.ResponseWriter, r *http.Requ
 	})
 }
 
+func (app *application) getStartupsByUserHandler(w http.ResponseWriter, r *http.Request) {
+	// Get email from query parameter
+	email := r.URL.Query().Get("email")
+	if email == "" {
+		http.Error(w, `{"status": "error", "message": "Email is required"}`, http.StatusBadRequest)
+		return
+	}
+
+	// Find user by email
+	var user User
+	if err := DB.Where("email = ?", email).First(&user).Error; err != nil {
+		http.Error(w, `{"status": "error", "message": "User not found"}`, http.StatusNotFound)
+		return
+	}
+
+	// Ensure the user is an Entrepreneur
+	var entrepreneur Entrepreneur
+	if err := DB.Where("user_id = ?", user.ID).First(&entrepreneur).Error; err != nil {
+		http.Error(w, `{"status": "error", "message": "User is not registered as an entrepreneur"}`, http.StatusForbidden)
+		return
+	}
+
+	// Fetch all startups for the entrepreneur
+	var startups []Startup
+	if err := DB.Where("entrepreneur_id = ?", entrepreneur.ID).Find(&startups).Error; err != nil {
+		http.Error(w, `{"status": "error", "message": "Failed to retrieve startups"}`, http.StatusInternalServerError)
+		return
+	}
+
+	// Prepare response
+	var result []map[string]interface{}
+	for _, startup := range startups {
+		result = append(result, map[string]interface{}{
+			"id":           startup.ID,
+			"startup_name": startup.StartupName,
+			"industry":     startup.Industry,
+			"description":  startup.Description,
+			"budget":       startup.Budget,
+			"timeframe":    startup.Timeframe,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":   "success",
+		"startups": result,
+	})
+}
