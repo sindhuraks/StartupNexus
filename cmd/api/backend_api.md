@@ -1,6 +1,6 @@
 # Backend API Documentation
 
-# 1. Signup API
+## 1. Signup API
 
 ### Endpoint: /signup
 - Method: POST
@@ -95,7 +95,7 @@ If there is an internal server error while creating the user:
 }
 ```
 
-2. User check API 
+## 2. User check API 
 
 ### Endpoint : /user/check
 - Method: GET
@@ -143,7 +143,7 @@ If the email query parameter is missing:
 }
 ```
 
-3. Connection Pending API 
+## 3. Connection Pending API 
 
 ### Endpoint: /connection/pending
 
@@ -184,7 +184,7 @@ Status 400: Missing email parameter
 }
 ```
 
-4. Connection Request API 
+## 4. Connection Request API 
 - Method : POST 
 Description: Allows an Investor or Mentor to send a connection request to an Entrepreneur.
 - Request Body:
@@ -226,7 +226,7 @@ Status 403: Sender or receiver role mismatch
 }
 ```
 
-5. Connection Accept API 
+## 5. Connection Accept API 
 - Method: PUT 
 Description: Allows an Entrepreneur to accept a pending connection request.
 URL Parameters:
@@ -259,7 +259,7 @@ Status 404: Connection request not found or not in pending state
 }
 ```
 
-6. Reject connection 
+## 6. Reject connection 
 - Method: DELETE 
 Description: Allows an Entrepreneur to reject a pending connection request.
 URL Parameters:
@@ -292,7 +292,7 @@ Status 404: Connection request not found or not in pending state
 }
 ```
 
-7. My connections 
+## 7. My connections 
 - Description: Fetches all accepted connections for a specified user (either an Investor, Mentor, or Entrepreneur).
 
 Query Parameters:
@@ -328,7 +328,7 @@ Status 400: Missing email parameter
 }
 ```
 
-8. All Startup API
+## 8. All Startup API
 Endpoint: /startups
 Method: GET
 Description: Fetches all startup information available.
@@ -356,7 +356,7 @@ Error Response (HTTP Status 500):
 }
 ```
 
-9. Add Startup API
+## 9. Add Startup API
 Endpoint: /startups/add
 Method: POST
 
@@ -412,7 +412,7 @@ Error Response (HTTP Status 500):
 }
 ```
 
-10. Update Startup API
+## 10. Update Startup API
 
 Endpoint: /startups/update
 Method: PUT
@@ -478,7 +478,7 @@ Error Response (HTTP Status 500):
 }
 ```
 
-11. Delete Startup API
+## 11. Delete Startup API
 
 Endpoint: /startups/delete
 Method: DELETE
@@ -523,7 +523,7 @@ Error Response (HTTP Status 500):
 }
 ```
 
-12. Get Startup By ID API
+## 12. Get Startup By ID API
 
 Endpoint: /startups/:id
 Method: GET
