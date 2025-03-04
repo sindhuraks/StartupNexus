@@ -1,0 +1,148 @@
+/* Main container */
+.container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    color: #f0f0f0;
+  }
+  
+  /* Title */
+  .heading {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  /* Common button and select styles */
+  .button, .select, .input {
+    padding: 12px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border 0.3s ease;
+    width: 100%; /* Ensures the button/select takes full width */
+    min-width: 300px; /* Ensures a minimum size */
+    height: 45px; /* Consistent height for all buttons/selects */
+    box-sizing: border-box;
+  }
+  
+  /* Hover effect for buttons and selects */
+  .button:hover, .select:hover, .input:hover {
+    background-color: #404040;
+    border-color: #06d0ac; /* Highlight border on hover */
+  }
+  
+  /* Focus state for buttons and selects */
+  .button:focus, .select:focus, .input:focus {
+    border-color: #06d0ac;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.1); /* Slight background color on focus */
+  }
+  
+  /* Disabled state for buttons and selects */
+  .button:disabled, .select:disabled, .input:disabled {
+    background-color: rgba(255, 255, 255, 0.2); /* Light background when disabled */
+    border-color: rgba(255, 255, 255, 0.3); /* Light border when disabled */
+    color: rgba(240, 240, 240, 0.5); /* Lighter text when disabled */
+  }
+  
+  /* Styles for select dropdown menu */
+  .select-menu {
+    background-color: #f7f7f7;
+    color: #f0f0f0;
+    border: 1px solid #cccccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for each option inside the select dropdown */
+  .select-option {
+    padding: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Hover effect for options inside select */
+  .select-option:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Selected option style inside select */
+  .select-option.selected {
+    background-color: #06d0ac;
+    color: #ffffff;
+  }
+  
+  /* Success message */
+  .successMessage {
+    text-align: center;
+    color: #06d0ac;
+  }
+  
+  /* Submit Button */
+  .submitButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 50%;
+    max-width: 400px;
+    margin-top: 40px;
+    background: linear-gradient(to bottom, #072239 35%, #072239 65%);
+    color: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #343b43;
+    font-weight: 600;
+  }
+  
+  .submitButton:hover {
+    background: linear-gradient(to bottom, #06d0ac 35%, #4c55ff 65%);
+  }
+  
+  /* Interest Buttons */
+  .interestButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .interestButtons button {
+    padding: 12px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border 0.3s ease;
+  }
+  
+  .interestButtons button:hover {
+    background-color: #404040;
+  }
+  
+  .selected {
+    background-color: #06d0ac;
+    border-color: #06d0ac;
+  }
+  
+  .unselected {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Success message */
+  .successMessage {
+    text-align: center;
+    color: #06d0ac;
+  }
