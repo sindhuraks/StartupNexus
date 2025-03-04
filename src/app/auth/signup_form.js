@@ -45,14 +45,60 @@ export default function SignupForm() {
   };
 
   const onSubmit = async (data) => {
+    // Validate phone number
     if (!isValidPhoneNumber(data.contact, "US")) {
       alert("Invalid phone number");
       return;
     }
-    console.log("Form Data Submitted: ", { ...data, selectedInterests });
-    setIsSubmitted(true);
+  
+    // Prepare the form data to be submitted
+    const formData = {
+      full_name: data.fullName,
+      email: data.email,
+      role: data.role.value,
+      phone_number: data.contact,
+      location: data.location?.value,
+      linkedin_profile: data.linkedin,
+      industry: selectedInterests.join(", "),
+      verificationproof: 'Dummy String',
+    };
+  
+    // Add role-specific fields
+    if (data.role.value === "Mentor") {
+      formData.expertise = data.Expertise;
+      formData.PastMentorships = data.PastMentorships;
+      formData.YearsOfExperience = data.YearsOfExperience;
+      formData.verificationproof = data.VerificationProof;
+    } else if (data.role.value === "Investor") {
+      formData.InvestmentRange = data.InvestmentRange;
+      formData.verificationproof = data.VerificationProof;
+      formData.ExperienceYears = '10';
+    }
+  
+    // Submit the form data to the API
+    try {
+      const response = await fetch("http://localhost:8080/v1/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        setIsSubmitted(true);
+        if (data.role.value === "entrepreneur") {
+          router.push("/page.js"); // Navigate to the login page for entrepreneur
+        }
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error("Error submitting the form: ", error);
+      alert("Something went wrong. Please try again later.");
+    }
   };
- 
+  
   const handlePhoneChange = (e) => {
     const phone = e.target.value;
     setContactValid(isValidPhoneNumber(phone, "US"));
@@ -60,10 +106,23 @@ export default function SignupForm() {
 
   return (
     <div className={styles.container}>
-      {isSubmitted ? (
-        <div className={styles.successMessage}>
-          <p>Your application is under review.</p>
-        </div>
+       {isSubmitted ? (
+        <>
+          {isSubmitted && (
+            <>
+              {role?.value === "entrepreneur" ? (
+                <div className={styles.successMessage}>
+                  <p>User profile is created successfully. Redirecting to login...</p>
+                </div>
+              ) : (
+                <div className={styles.statusMessage}>
+                  <p>Your application is under review.</p>
+                  <progress className={styles.progressBar} value="50" max="100"></progress>
+                </div>
+              )}
+            </>
+          )}
+        </>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div>
@@ -240,12 +299,12 @@ export default function SignupForm() {
                 <>
                   <div>
                     <label className={styles.label}>Past Mentorships</label>
-                    <input {...register("past_mentorships", { required: "Past mentorships are required" })} className={styles.input} placeholder="Enter past mentorships" />
+                    <input {...register("pastmentorships", { required: "Past mentorships are required" })} className={styles.input} placeholder="Enter past mentorships" />
                     {errors.past_mentorships && <span className={styles.error}>{errors.past_mentorships.message}</span>}
                   </div>
                   <div>
                     <label className={styles.label}>Years of Experience</label>
-                    <input {...register("years_of_experience", { required: "Years of experience is required" })} className={styles.input} type="number" placeholder="Enter years of experience" />
+                    <input {...register("yearsofexperience", { required: "Years of experience is required" })} className={styles.input} type="number" placeholder="Enter years of experience" />
                     {errors.years_of_experience && <span className={styles.error}>{errors.years_of_experience.message}</span>}
                   </div>
                 </>
@@ -254,14 +313,14 @@ export default function SignupForm() {
                 <>
                   <div>
                     <label className={styles.label}>Investment Range</label>
-                    <input {...register("investment_range", { required: "Investment range is required" })} className={styles.input} placeholder="Enter investment range" />
+                    <input {...register("investmentrange", { required: "Investment range is required" })} className={styles.input} placeholder="Enter investment range" />
                     {errors.investment_range && <span className={styles.error}>{errors.investment_range.message}</span>}
                   </div>
                 </>
               )}
               <div>
                 <label className={styles.label}>Verification Proof (PDF)</label>
-                <input {...register("verification_proof", { required: "Verification proof is required" })} className={styles.input} type="file" accept="application/pdf" />
+                <input {...register("verificationproof", { required: "Verification proof is required" })} className={styles.input} type="file" accept="application/pdf" />
                 {errors.verification_proof && <span className={styles.error}>{errors.verification_proof.message}</span>}
               </div>
             </>
@@ -276,10 +335,10 @@ export default function SignupForm() {
               ))}
             </div>
           </div>
-
-          <button type="submit" className={styles.submitButton}>Submit</button>
+          <button type="submit" className={styles.submitButton} onClick={() =>console.log("Submit clicked!")}>Submit</button>
         </form>
       )}
     </div>
   );
 }
+

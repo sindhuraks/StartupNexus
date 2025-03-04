@@ -3,7 +3,7 @@
 'use client';  // This marks the component as a Client Component
 
 import { SessionProvider } from "next-auth/react";
-import styles from "./page.module.css";
+import styles from "./globals.css";
 
 export default function Layout({ children }) {
   return (
