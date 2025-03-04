@@ -178,4 +178,63 @@ This API enables entrepreneurs to perform CRUD operations on their startup ideas
 
 The API ensures that only registered entrepreneurs can perform these operations, maintaining data integrity and security.
 
+# Backend Unit Tests
+
+## connections_test.go
+
+### Test Setup
+- **setupTestDB**: Initializes an in-memory SQLite database for testing.
+- **TestMain**: Ensures the test database is set up before running tests.
+
+### Connection Request Tests
+- **TestRequestConnectionHandler**
+  - **Successful Connection Request**: Ensures a valid connection request succeeds.
+  - **Connection Already Exists**: Tests handling of duplicate connection requests.
+  - **Invalid Sender Role**: Ensures role-based restrictions are enforced.
+
+### Connection Acceptance Tests
+- **TestAcceptConnectionHandler**
+  - **Successful Connection Acceptance**: Tests approving a valid connection.
+  - **Reject Non-Existing Connection**: Ensures handling of nonexistent connections.
+  - **Unauthorized User Accepting Connection**: Tests unauthorized connection acceptance.
+
+### Connection Rejection Tests
+- **TestRejectConnectionHandler**
+  - **Successful Connection Rejection**: Ensures a user can reject a pending request.
+  - **Reject Non-Existing Connection**: Tests handling of nonexistent connections.
+
+### Fetching Pending Connections
+- **TestGetPendingConnectionsHandler**
+  - **Retrieve Pending Connections Successfully**: Ensures correct retrieval of pending requests.
+
+# Signup API Testing
+
+This document outlines the test cases for the `signup_test.go` file, which tests the user signup and existence check functionalities of the application.
+
+## Technologies Used
+- Golang (Go)
+- GORM (ORM for database interactions)
+- Testify (Assertion library)
+- net/http/httptest (For HTTP request testing)
+
+## Test Cases
+
+### TestCheckUserHandler
+This test verifies the `/v1/user/check` endpoint, which checks if a user exists in the database.
+
+#### User Exists
+- **Setup**: Insert a mock user into the database.
+- **Request**: `GET /v1/user/check?email=existing@example.com`
+- **Expected Response**:
+  ```json
+  {
+    "exists": true,
+    "role": "Entrepreneur",
+    "full_name": "Existing User",
+    "email": "existing@example.com",
+    "phone_number": "1234567890",
+    "location": "New York",
+    "linkedin": "https://linkedin.com/in/existinguser",
+    "verification_status": "verified"
+  }
 
