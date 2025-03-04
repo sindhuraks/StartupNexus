@@ -60,19 +60,23 @@ export default function SignupForm() {
       location: data.location?.value,
       linkedin_profile: data.linkedin,
       industry: selectedInterests.join(", "),
-      verificationproof: 'Dummy String',
+      verification_proof: 'Dummy String',
+      verification_status: 'Approved',
     };
   
     // Add role-specific fields
     if (data.role.value === "Mentor") {
       formData.expertise = data.Expertise;
-      formData.PastMentorships = data.PastMentorships;
-      formData.YearsOfExperience = data.YearsOfExperience;
-      formData.verificationproof = data.VerificationProof;
+      formData.past_mentorships = data.PastMentorships;
+      formData.experience_years = data.YearsOfExperience;
+      formData.verification_proof = data.VerificationProof;
+      formData.verification_status = 'Pending';
     } else if (data.role.value === "Investor") {
-      formData.InvestmentRange = data.InvestmentRange;
-      formData.verificationproof = data.VerificationProof;
-      formData.ExperienceYears = '10';
+      formData.investment_range = data.InvestmentRange;
+      formData.verification_proof = data.VerificationProof;
+      formData.preferred_industries = 'AI';
+      formData.experience_years = '10';
+      formData.verification_status = 'Pending';
     }
   
     // Submit the form data to the API
