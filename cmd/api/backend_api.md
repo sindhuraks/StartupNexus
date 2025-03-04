@@ -1,6 +1,6 @@
 # Backend API Documentation
 
-1. Signup API
+# 1. Signup API
 
 ### Endpoint: /signup
 - Method: POST
