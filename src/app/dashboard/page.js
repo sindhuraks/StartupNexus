@@ -1,6 +1,7 @@
 "use client";
 import styles from "./dashboard.module.css";
 import { useState } from "react";
+import NewsFeed from "./newsfeed";
 
 export default function Dashboard() {
 
@@ -55,6 +56,7 @@ export default function Dashboard() {
             </div>
             <div className={styles.mainContainer}>
                 <div className={styles.leftContainer}>
+                    <NewsFeed />
                 </div>
                 <div className={styles.centerContainer}>
                     <div className={styles.startPostSection}>
