@@ -122,7 +122,15 @@
 }
 
 .leftContainer{
-  width: calc(25% - 20px);
+  width: 25%;
+  height: calc(100vh - 75px);
+  padding: 10px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-radius: 8px;
+  position: absolute;
+  top: 75px;
+  left: 0;
 }
 
 .centerContainer {
