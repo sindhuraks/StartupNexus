@@ -37,6 +37,7 @@ func (app *application) mount() http.Handler {
 	r.Route("/v1", func(r chi.Router) {
 		r.Post("/signup", app.signupHandler)
 		r.Get("/user/check", app.checkUserHandler)
+		r.Get("/user/search", app.searchUsersByNameHandler)
 		r.Get("/connection/pending", app.getPendingConnectionsHandler)
 		r.Post("/connection/request", app.requestConnectionHandler)
 		r.Put("/connection/accept/{id}", app.acceptConnectionHandler)
