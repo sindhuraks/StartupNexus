@@ -8,6 +8,6 @@ node_modules/
 npm-debug.log
 yarn-error.log
 bin/
-env.local
+.env.local
 .next/
 cypress.env.json
