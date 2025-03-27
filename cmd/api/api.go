@@ -47,7 +47,6 @@ func (app *application) mount() http.Handler {
 		r.Post("/startup/insert", app.insertStartupHandler)
 		r.Put("/startup/update", app.updateStartupHandler)
 		r.Delete("/startup/delete", app.deleteStartupHandler)
-
 	})
 
 	return r
