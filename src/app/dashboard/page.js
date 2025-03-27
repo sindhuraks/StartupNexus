@@ -7,6 +7,13 @@ export default function Dashboard() {
 
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const [isPostModalVisible, setPostModalVisible] = useState(false);
+    const [selectedIndustries, setSelectedIndustries] = useState([]);
+  
+    const industries = [
+        "AI", "Healthcare/Health Tech", "Cybersecurity", "Internet of Things (IoT)", 
+        "Fintech", "Clean Tech/Green Energy", "E-commerce/Retail Tech", "AgriTech", 
+        "Robotics and Automation", "Online Education/Skill Development", "Personalized Nutrition/Wellness"
+    ];
 
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev);
@@ -14,6 +21,12 @@ export default function Dashboard() {
 
     const togglePostModal = () => {
         setPostModalVisible((prev) => !prev);
+    };
+
+    const toggleIndustry = (industry) => {
+        setSelectedIndustries((prev) =>
+            prev.includes(industry) ? prev.filter(i => i !== industry) : [...prev, industry]
+        );
     };
 
     return (   
@@ -73,7 +86,43 @@ export default function Dashboard() {
                             <h3>Create a post</h3>
                             <button className={styles.closeButton} onClick={togglePostModal}>✖</button>
                         </div>
-                        <textarea placeholder="What do you want to talk about?" className={styles.postInput}></textarea>
+                        <form>
+                            <label className={styles.labelStyle}>
+                                Startup Name: <br></br>
+                                <input type="text" className={styles.formStyle} placeholder="Enter the name of your startup"/>
+                            </label>
+                            <br></br><br></br>
+                            <label className={styles.labelStyle}>
+                                Industry: <br></br>
+                                <div className={styles.industryButtons}>
+                                {industries.map((industry) => (
+                                    <button 
+                                        key={industry}
+                                        type="button" 
+                                        className={selectedIndustries.includes(industry) ? styles.selected : styles.unselected}
+                                        onClick={() => toggleIndustry(industry)}
+                                    >
+                                        {industry} {selectedIndustries.includes(industry) ? "✓" : "+"}
+                                    </button>
+                                ))}
+                            </div>
+                            </label>
+                            <br></br>
+                            <label className={styles.labelStyle}>
+                                Description:
+                                <textarea placeholder="What do you want to talk about?" className={styles.postInput}></textarea>
+                            </label>
+                            <br></br><br></br>
+                            <label className={styles.labelStyle}>
+                                Budget: <br></br>
+                                <input type="text" className={styles.formStyle} placeholder="Enter your estimated budget (e.g.5000)"/>
+                            </label>
+                            <br></br><br></br>
+                            <label className={styles.labelStyle}>
+                                Timeframe: <br></br>
+                                <input type="text" className={styles.formStyle} placeholder="Select a timeframe for your project (6 or 8 months)"/>
+                            </label>
+                        </form>
                         <div className={styles.modalFooter}>
                             <button onClick={togglePostModal} className={styles.postButton}>Post</button>
                         </div>

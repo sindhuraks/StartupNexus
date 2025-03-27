@@ -195,7 +195,8 @@
   flex-direction: column;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border: 0.5px solid #ffffff;
-  margin-bottom: 100px;
+  margin-bottom: -150px;
+  height: 560px;
 }
 
 .modalHeader {
@@ -221,14 +222,15 @@
 
 .postInput {
   width: 100%;
-  min-height: 150px;
-  border: none;
+  min-height: 55px;
   outline: none;
-  font-size: 20px;
+  font-size: 15px;
   padding: 10px;
   background-color: transparent;
   color: #ffffff;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .modalFooter {
@@ -243,5 +245,42 @@
   padding: 8px 15px;
   border-radius: 5px;
   border: none;
+  cursor: pointer;
+}
+
+.labelStyle {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: white;
+}
+
+.formStyle {
+  background-color: transparent;
+  border-color: #ffffff;
+  width: 450px;
+  height: 30px;
+}
+.formStyle::placeholder {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  padding: 5px;
+}
+
+.unselected {
+  background-color: transparent;
+  border: none;
+  padding: 10px 15px;
+  font-size: 12px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.selected {
+  background-color: #00DC82; /* Green background for selected */
+  border: none;
+  padding: 10px 15px;
+  font-size: 12px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: #000000; /* Black text for selected */
   cursor: pointer;
 }
