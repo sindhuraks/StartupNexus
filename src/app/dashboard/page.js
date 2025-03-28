@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import NewsFeed from "./newsfeed";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
+import UserProfile from "../user-profile/page";
 
 export default function Dashboard() {
 
@@ -14,6 +15,11 @@ export default function Dashboard() {
     const { data: session, status } = useSession();
     const [posts, setPosts] = useState([]);
     const [selectedPostId, setSelectedPostId] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null); // Track selected user
+
+
   
     const industries = [
         "AI", "Healthcare/Health Tech", "Cybersecurity", "Internet of Things (IoT)", 
@@ -27,6 +33,37 @@ export default function Dashboard() {
 
     const togglePostModal = () => {
         setPostModalVisible((prev) => !prev);
+    };
+        // Handle search
+        const handleSearch = async (e) => {
+            const term = e.target.value;
+            setSearchTerm(term);
+        };
+    
+
+        const handleKeyDown = async (e) => {
+            if (e.key === 'Enter' && searchTerm.length > 2) {
+                    try {
+                        const response = await fetch(`http://localhost:8080/v1/user/search?name=${searchTerm}`);
+    
+                        if (!response.ok) {
+                            throw new Error(`Failed to fetch search results: ${response.status}`);
+                        }
+                        const data = await response.json();
+                    if (data.status === "success") {
+                        setSearchResults(data.users); // Populate search results
+                    } else {
+                        setSearchResults([]);
+                    }
+                } catch (error) {
+                    console.error("Error fetching search results:", error);
+                }
+            }
+        };
+      // Handle user profile selection
+      const handleSelectUser = (user) => {
+        setSelectedUser(user); // Set the selected user
+        setSearchResults([]); // Clear search results after selecting
     };
 
     const toggleIndustry = (industry) => {
@@ -95,6 +132,14 @@ export default function Dashboard() {
             <div className={styles.horizontalbar}>
                 <h1 className={styles.logoText}>StartupNexus</h1>
                 <nav className={styles.navBar}>
+                <input
+                        type="text"
+                        className={styles.searchBar}
+                        placeholder="Search people and posts..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                        onKeyDown={handleKeyDown}
+                    />
                     <button className={`${styles.navItem} ${styles.active}`}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="#00DC82"/>
@@ -128,7 +173,28 @@ export default function Dashboard() {
                     )}
                 </div>
             </div>
-            <div className={styles.mainContainer}>
+            
+            {/* Search Results */}
+            {searchResults.length > 0 && (
+                <div className={styles.searchResults}>
+                    {searchResults.map((user) => (
+                        <div
+                            key={user.id}
+                            className={styles.searchResultItem}
+                            onClick={() => handleSelectUser(user)}
+                        >
+                            {user.full_name} - {user.role}
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Render UserProfile or NewsFeed */}
+            <div className={selectedUser ? styles.userProfileContainer : styles.mainContainer}>
+                {selectedUser ? (
+                    <UserProfile user={selectedUser} />
+                ) : (
+                    <>                
                 <div className={styles.leftContainer}>
                     <NewsFeed />
                 </div>
@@ -172,10 +238,13 @@ export default function Dashboard() {
                                             <button className={styles.commentButton}>Comment</button>
                                         </div>
                                     </div>
+
                             ))}
                         </div>
                     </div>
                 </div>
+                </>
+                )}
             </div>
             {isPostModalVisible && (
                 <div className={styles.modalOverlay}>
