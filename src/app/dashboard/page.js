@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import UserProfile from "../user-profile/page";
 import Networks from "../network/page";
-
+import moment from "moment/moment";
+import ViewProfile from "../view-profile/page";
 
 export default function Dashboard() {
 
@@ -21,14 +22,14 @@ export default function Dashboard() {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null); 
     const [showNetworksPage, setShowNetworksPage] = useState(false);
-
-
-  
+    const [editingPostId, setEditingPostId] = useState(null);
+    const [editedPostData, setEditedPostData] = useState({});
     const industries = [
         "AI", "Healthcare/Health Tech", "Cybersecurity", "Internet of Things (IoT)", 
         "Fintech", "Clean Tech/Green Energy", "E-commerce/Retail Tech", "AgriTech", 
         "Robotics and Automation", "Online Education/Skill Development", "Personalized Nutrition/Wellness"
     ];
+    const [showViewProfilePage, setShowViewProfilePage] = useState(false);
 
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev);
@@ -68,11 +69,13 @@ export default function Dashboard() {
         setSelectedUser(user); // Set the selected user
         setSearchResults([]); // Clear search results after selecting
         setShowNetworksPage(false);
+        setShowViewProfilePage(false); // Reset view profile page when viewing another user
     };
     // Show My Network page
     const handleMyNetworkClick = () => {
         setShowNetworksPage(true); // Show My Network page
         setSelectedUser(null); // Clear selected user if any
+        setShowViewProfilePage(false); // Reset view profile page
     };
 
     const toggleIndustry = (industry) => {
@@ -83,6 +86,24 @@ export default function Dashboard() {
 
     const toggleOptionsMenu = (postId) => {
         setSelectedPostId(selectedPostId === postId ? null : postId);
+    };
+
+    const handleEditClick = (post) => {
+        setEditingPostId(post.id);
+        setEditedPostData({
+            startup_name: post.startup_name,
+            industry: post.industry,
+            description: post.description,
+            budget: post.budget,
+            timeframe: post.timeframe
+        });
+    };
+    
+    const handleEditChange = (e, field) => {
+        setEditedPostData((prev) => ({
+            ...prev,
+            [field]: e.target.value,
+        }));
     };
 
     // create a post
@@ -115,26 +136,86 @@ export default function Dashboard() {
             console.error('There has been a problem with your insert operation:', error);
             }
     };
-    
+
     // fetch all posts
-    useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/v1/startup/all');
-                if (response.ok) {
-                    const data = await response.json();
-                    setPosts(data.startups || []);
-                } else {
-                    setPosts([]);
-                }
-            } catch (error) {
-                console.error('Error fetching posts:', error);
+    const fetchPosts = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/v1/startup/all');
+            if (response.ok) {
+                const data = await response.json();
+                setPosts(data.startups || []);
+            } else {
                 setPosts([]);
             }
-        };
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            setPosts([]);
+        }
+    };
 
+    const handleSaveEdit = async (postId) => {
+        try {
+            const response = await fetch('http://localhost:8080/v1/startup/update', {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ startup_id: postId, email: session?.user?.email, ...editedPostData }),
+            });
+    
+            if (response.ok) {
+                setEditingPostId(null);
+                fetchPosts(); // Refresh posts after update
+            } else {
+                alert("Failed to update post.");
+            }
+        } catch (error) {
+            console.error("Error updating post:", error);
+        }
+    };
+
+    // delete post
+    const handleDeletePost = async (postId) => {
+        try {
+          const response = await fetch('http://localhost:8080/v1/startup/delete', {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: session?.user?.email, // Include user's email for authentication
+              startup_id: postId, // Pass the startup ID to delete
+            }),
+          });
+      
+          if (response.ok) {
+            // Remove the deleted post from the screen
+            setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+          } else {
+            const errorData = await response.json();
+            alert(`Failed to delete post: ${errorData.message}`);
+          }
+        } catch (error) {
+          console.error("Error deleting post:", error);
+        }
+    };
+
+    useEffect(() => {
         fetchPosts();
     }, []);
+
+    const handleViewProfileClick = () => {
+        setShowViewProfilePage(true); // Show the ViewProfile page
+        setShowNetworksPage(false); // Hide Networks page
+        setSelectedUser(null); // Clear selected user
+        setDropdownVisible(false); // Close the dropdown menu
+    };
+
+    // Handle clicking Home button
+    const handleHomeClick = () => {
+        setShowViewProfilePage(false);
+        setShowNetworksPage(false);
+        setSelectedUser(null);
+        fetchPosts();
+    };
 
     return (   
         <div>
@@ -149,14 +230,14 @@ export default function Dashboard() {
                         onChange={handleSearch}
                         onKeyDown={handleKeyDown}
                     />
-                    <button className={`${styles.navItem} ${styles.active}`}>
+                    <button className={`${styles.navItem} ${styles.active}`} onClick={handleHomeClick}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="#00DC82"/>
                         </svg>
                         Home</button>
                     <button className={`${styles.navItem} ${styles.active}`} onClick={handleMyNetworkClick} >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.9 0-7.2 2.1-9 5.2V22h18v-2.8c-1.8-3.1-5.1-5.2-9-5.2z" fill="#00DC82"/>
+                        <path d="M12 12c2.7 0 5-2.3 5-5-2.3-5-5-5-5 0s2.3 5 5 5zm0 2c-3.9 0-7.2 2.1-9 5.2V22h18v-2.8c-1.8-3.1-5.1-5.2-9-5.2z" fill="#00DC82"/>
                     </svg>
                         My Network</button>
                         <button className={`${styles.navItem} ${styles.active}`}>
@@ -176,7 +257,7 @@ export default function Dashboard() {
                     </div>
                     {isDropdownVisible && (
                         <div className={styles.dropdownMenu}>
-                            <button className={styles.dropdownItem}>View Profile</button>
+                            <button className={styles.dropdownItem} onClick={handleViewProfileClick}>View Profile</button>
                             <button className={styles.dropdownItem}>Sign Out</button>
                         </div>
                     )}
@@ -197,72 +278,140 @@ export default function Dashboard() {
                     ))}
                 </div>
             )}
-            {/* Render Networks Page or Dashboard Content */}
-            {showNetworksPage ? (
+            
+            {/* Main Content Rendering Logic */}
+            {showViewProfilePage ? (
+                <ViewProfile />
+            ) : showNetworksPage ? (
                 <Networks />
             ) : (
                 <>
-
-            {/* Render UserProfile or NewsFeed */}
-            <div className={selectedUser ? styles.userProfileContainer : styles.mainContainer}>
-                {selectedUser ? (
-                    <UserProfile user={selectedUser} />
-                ) : (
-                    <>                
-                <div className={styles.leftContainer}>
-                    <NewsFeed />
-                </div>
-                <div className={styles.centerContainer}>
-                    <div className={styles.startPostSection}>
-                        <button className={styles.startPostButton} onClick={togglePostModal}>
-                            Start a post
-                        </button>
-                        <div className={styles.displayPostSection}>
-                            {posts.map(post => (
-                                    <div key={post.id} className={styles.post}>
-                                        <button className={styles.moreOptionsButton} onClick={() => toggleOptionsMenu(post.id)}>. . .</button>
-                                        {selectedPostId === post.id && (
-                                            <div className={styles.optionsMenu}>
-                                                <button className={styles.optionButton}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path d="M12 20h9"/>
-                                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-                                                    </svg>
-                                                Edit
-                                                </button>
-                                                <button className={styles.optionButton}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                        <path d="M3 6h18"/>
-                                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                                        <path d="M10 11v6"/>
-                                                        <path d="M14 11v6"/>
-                                                        <path d="M5 6h14l-1 14H6Z"/>
-                                                    </svg>
-                                                    Delete</button>
-                                            </div>
-                                        )}
-                                        <h3 className={styles.postStyle}>{post.entrepreneur.name}</h3><br></br>
-                                        <h4 className={styles.postStyle}>Startup Name: {post.startup_name}</h4>
-                                        <p className={styles.postStyle}>Industry: {post.industry}</p>
-                                        <p className={styles.postStyle}>Description: {post.description}</p>
-                                        <p className={styles.postStyle}>Budget: {post.budget}</p>
-                                        <p className={styles.postStyle}>Timeframe: {post.timeframe}</p>
-                                        <hr className={styles.separator}></hr>
-                                        <div className={styles.buttonContainer}>
-                                            <button className={styles.likeButton}>Like</button>
-                                            <button className={styles.commentButton}>Comment</button>
-                                        </div>
-                                    </div>
-
-                            ))}
+                {/* Render UserProfile or NewsFeed */}
+                <div className={selectedUser ? styles.userProfileContainer : styles.mainContainer}>
+                    {selectedUser ? (
+                        <UserProfile user={selectedUser} />
+                    ) : (
+                        <>                
+                        <div className={styles.leftContainer}>
+                            <NewsFeed />
                         </div>
-                    </div>
+                        <div className={styles.centerContainer}>
+                            <div className={styles.startPostSection}>
+                                <button className={styles.startPostButton} onClick={togglePostModal}>
+                                    Start a post
+                                </button>
+                                <div className={styles.displayPostSection}>
+                                    {posts.map(post => (
+                                            <div key={post.id} className={styles.post}>
+                                                <button className={styles.moreOptionsButton} onClick={() => toggleOptionsMenu(post.id)}>. . .</button>
+                                                {selectedPostId === post.id && (
+                                                    <div className={styles.optionsMenu}>
+                                                        <button className={styles.optionButton} onClick={() => handleEditClick(post)}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                            <path d="M12 20h9"/>
+                                                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                                                            </svg>
+                                                        Edit
+                                                        </button>
+                                                        <button className={styles.optionButton} onClick={() => handleDeletePost(post.id)}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                <path d="M3 6h18"/>
+                                                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                                <path d="M10 11v6"/>
+                                                                <path d="M14 11v6"/>
+                                                                <path d="M5 6h14l-1 14H6Z"/>
+                                                            </svg>
+                                                            Delete</button>
+                                                    </div>
+                                                )}
+                                                {editingPostId === post.id ? (
+                                                    <>
+                                                        <div className={styles.editPost}>
+                                                            <label>
+                                                            Startup Name:
+                                                            <input
+                                                                type="text"
+                                                                className={styles.formStyle}
+                                                                value={editedPostData.startup_name}
+                                                                onChange={(e) => handleEditChange(e, "startup_name")}
+                                                            />
+                                                            </label><br></br><br></br>
+                                                            <label>
+                                                            Industry:<br></br>
+                                                            <input
+                                                                type="text"
+                                                                className={styles.formStyle}
+                                                                value={editedPostData.industry}
+                                                                onChange={(e) => handleEditChange(e, "industry")}
+                                                            />
+                                                            </label><br></br><br></br>
+                                                            <label>
+                                                            Description:
+                                                            <textarea
+                                                                className={styles.formStyle}
+                                                                value={editedPostData.description}
+                                                                onChange={(e) => handleEditChange(e, "description")}
+                                                            />
+                                                            </label><br></br><br></br>
+                                                            <label>
+                                                            Budget:<br></br>
+                                                            <input
+                                                                type="text"
+                                                                className={styles.formStyle}
+                                                                value={editedPostData.budget}
+                                                                onChange={(e) => handleEditChange(e, "budget")}
+                                                            />
+                                                            </label><br></br><br></br>
+                                                            <label>
+                                                            Timeframe:
+                                                            <input
+                                                                type="text"
+                                                                className={styles.formStyle}
+                                                                value={editedPostData.timeframe}
+                                                                onChange={(e) => handleEditChange(e, "timeframe")}
+                                                            />
+                                                            </label><br></br><br></br>
+                                                        {/* Save and Cancel Buttons */}
+                                                            <div className={styles.editButtons}>
+                                                            <button className={styles.likeButton} onClick={() => handleSaveEdit(post.id)}>Save</button>
+                                                            <button className={styles.commentButton} onClick={() => setEditingPostId(null)}>Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                    <h3 className={styles.postStyle}>{post.entrepreneur.name}</h3>
+                                                    <p className={styles.timeStyle}>
+                                                        {moment(post.created_at).fromNow()}
+                                                    </p>
+                                                    {post.updated_at && post.updated_at !== post.created_at && (
+                                                        <p className={styles.timeStyle}>
+                                                        {moment(post.updated_at).fromNow()}
+                                                        </p>
+                                                    )} <br></br>
+                                                    <h4 className={styles.postStyle}>Startup Name: {post.startup_name}</h4>
+                                                    <p className={styles.postStyle}>Industry: {post.industry}</p>
+                                                    <p className={styles.postStyle}>Description: {post.description}</p>
+                                                    <p className={styles.postStyle}>Budget: {post.budget}</p>
+                                                    <p className={styles.postStyle}>Timeframe: {post.timeframe}</p>
+                                                    <hr className={styles.separator}></hr>
+                                                    <div className={styles.buttonContainer}>
+                                                        <button className={styles.likeButton}>Like</button>
+                                                        <button className={styles.commentButton}>Comment</button>
+                                                    </div>
+                                                    </>
+                                                )}
+                                            </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        </>
+                    )}
                 </div>
                 </>
-                )}
-            </div>
-            </>
             )}
+            
             {isPostModalVisible && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.postModal}>
