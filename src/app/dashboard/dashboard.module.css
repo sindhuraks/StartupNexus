@@ -145,7 +145,6 @@
   align-items: center;
   margin-top: 20px;
   height: calc(100vh - 35px);
-  overflow-y: auto;
 }
 
 .startPostSection {
@@ -449,6 +448,7 @@
 
 .searchBar::placeholder {
   color: #cccccc;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .searchBar:focus {
