@@ -1,0 +1,86 @@
+/* Full-page container */
+.pageContainer {
+    padding: 24px;
+    background: linear-gradient(to bottom, hsl(155, 59%, 43%) 0%, #0D4D3E 5%, #072239 35%, #072239 100%);
+    color: #eeeeee;
+    min-height: 100vh;
+}
+
+/* Back button styling */
+.backButton {
+    background-color: transparent;
+    color: #00DC82;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.backButton:hover {
+    text-decoration: underline;
+}
+
+/* Title styling */
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 24px;
+}
+
+/* Connections container */
+.connectionsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* Individual connection card */
+.connectionCard {
+    background-color: rgba(2, 4, 32, 0.85);
+    color: #eeeeee;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 128, 128, 0.25) 0px 4px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: calc(33.333% - 16px); /* Three cards per row */
+}
+
+/* Profile picture styling */
+.profilePicture img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+/* Connection info styling */
+.connectionInfo h2 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.connectionInfo p {
+    font-size: 14px;
+}
+
+.linkedinLink {
+    color: #00DC82;
+    text-decoration: none;
+}
+
+.linkedinLink:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .connectionCard {
+        width: calc(50% - 16px); /* Two cards per row on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .connectionCard {
+        width: calc(100% - 16px); /* One card per row on very small screens */
+    }
+}

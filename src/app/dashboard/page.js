@@ -5,6 +5,8 @@ import NewsFeed from "./newsfeed";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import UserProfile from "../user-profile/page";
+import Networks from "../network/page";
+
 
 export default function Dashboard() {
 
@@ -17,7 +19,8 @@ export default function Dashboard() {
     const [selectedPostId, setSelectedPostId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null); // Track selected user
+    const [selectedUser, setSelectedUser] = useState(null); 
+    const [showNetworksPage, setShowNetworksPage] = useState(false);
 
 
   
@@ -64,6 +67,12 @@ export default function Dashboard() {
       const handleSelectUser = (user) => {
         setSelectedUser(user); // Set the selected user
         setSearchResults([]); // Clear search results after selecting
+        setShowNetworksPage(false);
+    };
+    // Show My Network page
+    const handleMyNetworkClick = () => {
+        setShowNetworksPage(true); // Show My Network page
+        setSelectedUser(null); // Clear selected user if any
     };
 
     const toggleIndustry = (industry) => {
@@ -145,7 +154,7 @@ export default function Dashboard() {
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="#00DC82"/>
                         </svg>
                         Home</button>
-                    <button className={`${styles.navItem} ${styles.active}`}>
+                    <button className={`${styles.navItem} ${styles.active}`} onClick={handleMyNetworkClick} >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.9 0-7.2 2.1-9 5.2V22h18v-2.8c-1.8-3.1-5.1-5.2-9-5.2z" fill="#00DC82"/>
                     </svg>
@@ -188,6 +197,11 @@ export default function Dashboard() {
                     ))}
                 </div>
             )}
+            {/* Render Networks Page or Dashboard Content */}
+            {showNetworksPage ? (
+                <Networks />
+            ) : (
+                <>
 
             {/* Render UserProfile or NewsFeed */}
             <div className={selectedUser ? styles.userProfileContainer : styles.mainContainer}>
@@ -247,6 +261,8 @@ export default function Dashboard() {
                 </>
                 )}
             </div>
+            </>
+            )}
             {isPostModalVisible && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.postModal}>
