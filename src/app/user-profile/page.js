@@ -1,12 +1,15 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react"; // Import session hook
 import styles from "./user-profile.module.css";
 
 export default function UserProfile({ user }) {
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [infoBoxMessage, setInfoBoxMessage] = useState(""); // State for info box message
+    const { data: session } = useSession(); // Get session data
 
     useEffect(() => {
         if (!user) return;
@@ -52,9 +55,36 @@ export default function UserProfile({ user }) {
         fetchUserData();
     }, [user]);
 
-    const handleConnectClick = () => {
-        alert(`Sent a connection request to ${user.full_name}`);
-        // Add backend API call for sending connection requests here
+    const handleConnectClick = async () => {
+        if (!session) {
+            setInfoBoxMessage("You must be logged in to send a connection request.");
+            return;
+        }
+
+        try {
+            const requestBody = {
+                sender_email: session.user.email, // Use email from session
+                receiver_email: user.email, // Receiver email from user data
+            };
+
+            const response = await fetch("http://localhost:8080/v1/connection/request", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            if (response.ok) {
+                setInfoBoxMessage(`Connection request sent successfully to ${user.full_name}`);
+            } else {
+                const errorData = await response.json();
+                setInfoBoxMessage(`Failed to send connection request. Error: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error("Error sending connection request:", error);
+            setInfoBoxMessage("An error occurred while sending the connection request.");
+        }
     };
 
     const handleMessageClick = () => {
@@ -68,6 +98,16 @@ export default function UserProfile({ user }) {
 
     return (
         <div className={styles.pageContainer}>
+            {/* Info Box */}
+            {infoBoxMessage && (
+                <div className={styles.infoBox}>
+                    <p>{infoBoxMessage}</p>
+                    <button onClick={() => setInfoBoxMessage("")} className={styles.closeInfoBox}>
+                        ✖
+                    </button>
+                </div>
+            )}
+
             {/* Header Section */}
             <div className={styles.header}>
                 <div className={styles.profilePicture}>
