@@ -8,7 +8,7 @@ import (
 // Handler to fetch all startups
 func (app *application) getAllStartupsHandler(w http.ResponseWriter, r *http.Request) {
 	var startups []Startup
-	if err := DB.Find(&startups).Error; err != nil {
+	if err := DB.Order("created_at DESC").Find(&startups).Error; err != nil {
 		http.Error(w, "Failed to retrieve startups", http.StatusInternalServerError)
 		return
 	}
@@ -27,6 +27,8 @@ func (app *application) getAllStartupsHandler(w http.ResponseWriter, r *http.Req
 			"description":  startup.Description,
 			"budget":       startup.Budget,
 			"timeframe":    startup.Timeframe,
+			"created_at":   startup.CreatedAt,
+			"updated_at":   startup.UpdatedAt,
 			"entrepreneur": map[string]interface{}{
 				"id":       entrepreneur.ID,
 				"name":     entrepreneur.FullName,
@@ -136,7 +138,7 @@ func (app *application) updateStartupHandler(w http.ResponseWriter, r *http.Requ
 	})
 }
 
-// Delete startup handler 
+// Delete startup handler
 func (app *application) deleteStartupHandler(w http.ResponseWriter, r *http.Request) {
 	// Parse request body
 	var request struct {
@@ -207,7 +209,7 @@ func (app *application) getStartupsByUserHandler(w http.ResponseWriter, r *http.
 
 	// Fetch all startups for the entrepreneur
 	var startups []Startup
-	if err := DB.Where("entrepreneur_id = ?", entrepreneur.ID).Find(&startups).Error; err != nil {
+	if err := DB.Where("entrepreneur_id = ?", entrepreneur.ID).Order("created_at DESC").Find(&startups).Error; err != nil {
 		http.Error(w, `{"status": "error", "message": "Failed to retrieve startups"}`, http.StatusInternalServerError)
 		return
 	}
@@ -222,6 +224,8 @@ func (app *application) getStartupsByUserHandler(w http.ResponseWriter, r *http.
 			"description":  startup.Description,
 			"budget":       startup.Budget,
 			"timeframe":    startup.Timeframe,
+			"created_at":   startup.CreatedAt,
+			"updated_at":   startup.UpdatedAt,
 		})
 	}
 
