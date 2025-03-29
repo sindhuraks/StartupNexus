@@ -134,14 +134,30 @@
 }
 
 .centerContainer {
+  /*width: calc(75% - 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;*/
   width: calc(75% - 20px);
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  height: calc(100vh - 35px);
 }
 
 .startPostSection {
+  /*border-width: thin;
+  padding: 15px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 490px;
+  gap: 10px;*/
   border-width: thin;
   padding: 15px;
   border-radius: 8px;
@@ -150,7 +166,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 650px;
+  margin-bottom: 70px;
+  margin-top: -10px;
+  top: 20px;
+  z-index: 10;
+  background: inherit;
+  gap: 10px;
+}
+
+.displayPostSection {
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  padding-top: 40px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  gap: 10px;
 }
 
 .postModal {
@@ -187,7 +218,13 @@
 }
 
 .postModal {
-  background: transparent;
+  background: linear-gradient(
+      to bottom,
+      hsl(155, 59%, 43%) 0%,
+      #0D4D3E 5%, 
+      #072239 35%, 
+      #072239 65%
+    );
   width: 500px;
   border-radius: 10px;
   padding: 20px;
@@ -195,8 +232,10 @@
   flex-direction: column;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border: 0.5px solid #ffffff;
-  margin-bottom: -150px;
-  height: 560px;
+  margin-bottom: -190px;
+  height: 552px;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .modalHeader {
@@ -258,6 +297,7 @@
   border-color: #ffffff;
   width: 450px;
   height: 30px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 .formStyle::placeholder {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -276,11 +316,168 @@
 }
 
 .selected {
-  background-color: #00DC82; /* Green background for selected */
+  background-color: #00DC82;
   border: none;
   padding: 10px 15px;
   font-size: 12px;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  color: #000000; /* Black text for selected */
+  color: #000000;
   cursor: pointer;
+}
+
+.postStyle {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 18px;
+  /*background-color: rgba(255, 255, 255, 0.1);*/
+}
+
+.post {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px; 
+}
+
+.moreOptionsButton {
+  position: absolute;
+  background: transparent;
+  border: none;
+  padding-left: 450px;
+  padding-bottom: 20px;
+  cursor: pointer;
+}
+
+.moreOptionsButton:hover {
+  color: #00DC82;
+}
+
+.optionsMenu {
+  position: absolute;
+  right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  padding: 5px 0;
+  z-index: 10;
+  margin-right: 345px;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.optionButton {
+  background: none;
+  border: none;
+  padding: 5px;
+  margin-top: 1px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #ffffff;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 12px;
+}
+
+.commentOptionsButton {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.commentptionsButton:hover {
+  color: #00DC82;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.likeButton, .commentButton {
+  padding: 1px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  box-sizing: border-box; 
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 15px;
+}
+
+.likeButton {
+  background-color: transparent;
+  color: white;
+}
+
+.commentButton {
+  background-color: transparent;
+  color: white;
+}
+
+.commentButton:hover {
+  color: #00DC82;
+}
+
+.likeButton:hover {
+  color: #00DC82;
+}
+
+.separator {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin: 5px 0; /* Adjust spacing around the line */
+}
+.searchBar {
+  width: 320px;
+  padding: 8px;
+  border: 1px solid #00DC82;
+  border-radius: 20px;
+  background-color: rgba(2, 4, 32, 0.75);
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  position: relative;
+  left: -80px;
+}
+
+.searchBar::placeholder {
+  color: #cccccc;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.searchBar:focus {
+  border-color: #00ff88;
+}
+
+.searchResults {
+  position: absolute;
+  top: 60px; /* Adjust this to control the vertical distance from the search bar */
+  left: 41%; /* Position it relative to the search bar */
+  transform: translateX(-50%); /* Center it horizontally */
+  background-color: rgba(2, 4, 32, 0.85);
+  border-radius: 8px;
+  width: 320px; /* Ensure the width matches the search bar */
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 80;
+}
+
+.searchResultItem {
+  padding: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  border-bottom: 1px solid #444;
+  transition: background-color 0.2s;
+}
+
+.searchResultItem:hover {
+  background-color: #333;
 }
