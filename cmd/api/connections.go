@@ -25,27 +25,17 @@ func (app *application) requestConnectionHandler(w http.ResponseWriter, r *http.
 		return
 	}
 
-	// Find sender (Investor or Mentor)
+	// Find sender
 	var sender User
 	if err := DB.Where("email = ?", req.SenderEmail).First(&sender).Error; err != nil {
 		http.Error(w, "Sender not found", http.StatusNotFound)
 		return
 	}
 
-	// Find receiver (Entrepreneur)
+	// Find receiver
 	var receiver User
 	if err := DB.Where("email = ?", req.ReceiverEmail).First(&receiver).Error; err != nil {
 		http.Error(w, "Receiver not found", http.StatusNotFound)
-		return
-	}
-
-	// Ensure sender is Investor/Mentor and receiver is Entrepreneur
-	if sender.Role != "Investor" && sender.Role != "Mentor" {
-		http.Error(w, "Only Investors and Mentors can send connection requests", http.StatusForbidden)
-		return
-	}
-	if receiver.Role != "Entrepreneur" {
-		http.Error(w, "Only Entrepreneurs can receive connection requests", http.StatusForbidden)
 		return
 	}
 
@@ -80,23 +70,23 @@ func (app *application) acceptConnectionHandler(w http.ResponseWriter, r *http.R
 	// Get connection ID from URL params
 	connID := chi.URLParam(r, "id")
 
-	// Get entrepreneur email from query params
+	// Get receiver email from query params
 	email := r.URL.Query().Get("email")
 	if email == "" {
 		http.Error(w, "Email is required", http.StatusBadRequest)
 		return
 	}
 
-	// Find the entrepreneur by email
-	var entrepreneur User
-	if err := DB.Where("email = ? AND role = ?", email, "Entrepreneur").First(&entrepreneur).Error; err != nil {
-		http.Error(w, "Entrepreneur not found", http.StatusNotFound)
+	// Find the receiver by email
+	var receiver User
+	if err := DB.Where("email = ?", email).First(&receiver).Error; err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
 		return
 	}
 
 	// Find the pending connection request
 	var connection Connection
-	err := DB.Where("id = ? AND receiver_id = ? AND status = ?", connID, entrepreneur.ID, "pending").First(&connection).Error
+	err := DB.Where("id = ? AND receiver_id = ? AND status = ?", connID, receiver.ID, "pending").First(&connection).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			http.Error(w, "Pending connection request not found", http.StatusNotFound)
@@ -122,28 +112,28 @@ func (app *application) acceptConnectionHandler(w http.ResponseWriter, r *http.R
 }
 
 func (app *application) getPendingConnectionsHandler(w http.ResponseWriter, r *http.Request) {
-	// Get entrepreneur email from query params
+	// Get user email from query params
 	email := r.URL.Query().Get("email")
 	if email == "" {
 		http.Error(w, "Email is required", http.StatusBadRequest)
 		return
 	}
 
-	// Find the entrepreneur by email
-	var entrepreneur User
-	if err := DB.Where("email = ? AND role = ?", email, "Entrepreneur").First(&entrepreneur).Error; err != nil {
-		http.Error(w, "Entrepreneur not found", http.StatusNotFound)
+	// Find the user by email
+	var user User
+	if err := DB.Where("email = ?", email).First(&user).Error; err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
 		return
 	}
 
 	// Fetch pending connection requests
 	var pendingConnections []Connection
-	if err := DB.Where("receiver_id = ? AND status = ?", entrepreneur.ID, "pending").Find(&pendingConnections).Error; err != nil {
+	if err := DB.Where("receiver_id = ? AND status = ?", user.ID, "pending").Find(&pendingConnections).Error; err != nil {
 		http.Error(w, "Error fetching pending connections", http.StatusInternalServerError)
 		return
 	}
 
-	// Retrieve details of senders (Investors/Mentors)
+	// Retrieve details of senders
 	var connectionDetails []map[string]interface{}
 	for _, conn := range pendingConnections {
 		var sender User
@@ -168,23 +158,23 @@ func (app *application) rejectConnectionHandler(w http.ResponseWriter, r *http.R
 	// Get connection ID from URL params
 	connID := chi.URLParam(r, "id")
 
-	// Get entrepreneur email from query params
+	// Get receiver email from query params
 	email := r.URL.Query().Get("email")
 	if email == "" {
 		http.Error(w, "Email is required", http.StatusBadRequest)
 		return
 	}
 
-	// Find the entrepreneur by email
-	var entrepreneur User
-	if err := DB.Where("email = ? AND role = ?", email, "Entrepreneur").First(&entrepreneur).Error; err != nil {
-		http.Error(w, "Entrepreneur not found", http.StatusNotFound)
+	// Find the receiver by email
+	var receiver User
+	if err := DB.Where("email = ?", email).First(&receiver).Error; err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
 		return
 	}
 
 	// Find the pending connection request
 	var connection Connection
-	err := DB.Where("id = ? AND receiver_id = ? AND status = ?", connID, entrepreneur.ID, "pending").First(&connection).Error
+	err := DB.Where("id = ? AND receiver_id = ? AND status = ?", connID, receiver.ID, "pending").First(&connection).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			http.Error(w, "Pending connection request not found", http.StatusNotFound)
