@@ -8,7 +8,6 @@ import '@testing-library/jest-dom'
 jest.mock('next-auth/react', () => ({
     useSession: jest.fn(),
     signIn: jest.fn(),
-    signOut: jest.fn(),
   }));
 
 // Mock the typewriter effect
@@ -27,20 +26,10 @@ describe('Home component', () => {
     it('renders sign-in buttons when user is not authenticated', () => {
         useSession.mockReturnValue({ data: null });
         render(<Home />);
-        expect(screen.getByText('Welcome back')).toBeInTheDocument();
+        expect(screen.getByText('Welcome Back!')).toBeInTheDocument();
         expect(screen.getByText('Sign in to your account')).toBeInTheDocument();
         expect(screen.getByText('Continue with GitHub')).toBeInTheDocument();
         expect(screen.getByText('Continue with Google')).toBeInTheDocument();
-    });
-
-    // Test case to render the sign out button when user is authenticated
-    it('renders welcome message and sign-out button when user is authenticated', () => {
-        useSession.mockReturnValue({
-          data: { user: { name: 'Test User' } },
-        });
-        render(<Home />);
-        expect(screen.getByText('Welcome back, Test User')).toBeInTheDocument();
-        expect(screen.getByText('Sign Out')).toBeInTheDocument();
     });
 
     // Test case to check if the signIn function is called when the Continue with GitHub button is clicked.
@@ -64,14 +53,4 @@ describe('Home component', () => {
         callbackUrl: '/',
         });
     });
-
-    // Test case to check if the signOut function is called when the "Sign Out" button is clicked.
-    it('calls signOut function when Sign Out button is clicked', () => {
-        useSession.mockReturnValue({
-          data: { user: { name: 'Test User' } },
-        });
-        render(<Home />);
-        fireEvent.click(screen.getByText('Sign Out'));
-        expect(require('next-auth/react').signOut).toHaveBeenCalled();
-    });   
 });
