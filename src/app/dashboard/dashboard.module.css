@@ -234,6 +234,8 @@
   border: 0.5px solid #ffffff;
   margin-bottom: -190px;
   height: 552px;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .modalHeader {
