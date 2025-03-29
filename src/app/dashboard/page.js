@@ -227,12 +227,13 @@ export default function Dashboard() {
                                                     Delete</button>
                                             </div>
                                         )}
+                                        <h3 className={styles.postStyle}>{post.entrepreneur.name}</h3><br></br>
                                         <h4 className={styles.postStyle}>Startup Name: {post.startup_name}</h4>
                                         <p className={styles.postStyle}>Industry: {post.industry}</p>
                                         <p className={styles.postStyle}>Description: {post.description}</p>
                                         <p className={styles.postStyle}>Budget: {post.budget}</p>
                                         <p className={styles.postStyle}>Timeframe: {post.timeframe}</p>
-                                        <hr class="separator"></hr>
+                                        <hr className={styles.separator}></hr>
                                         <div className={styles.buttonContainer}>
                                             <button className={styles.likeButton}>Like</button>
                                             <button className={styles.commentButton}>Comment</button>
