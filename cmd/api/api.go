@@ -39,6 +39,7 @@ func (app *application) mount() http.Handler {
 		r.Get("/user/check", app.checkUserHandler)
 		r.Get("/user/search", app.searchUsersByNameHandler)
 		r.Get("/connection/pending", app.getPendingConnectionsHandler)
+		r.Get("/suggestions", app.getConnectionSuggestionsHandler)
 		r.Post("/connection/request", app.requestConnectionHandler)
 		r.Put("/connection/accept/{id}", app.acceptConnectionHandler)
 		r.Delete("/connection/reject/{id}", app.rejectConnectionHandler)
@@ -48,6 +49,7 @@ func (app *application) mount() http.Handler {
 		r.Post("/startup/insert", app.insertStartupHandler)
 		r.Put("/startup/update", app.updateStartupHandler)
 		r.Delete("/startup/delete", app.deleteStartupHandler)
+
 	})
 
 	return r
