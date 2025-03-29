@@ -481,3 +481,12 @@
 .searchResultItem:hover {
   background-color: #333;
 }
+
+.editPost {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.timeStyle {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 13px;
+}
