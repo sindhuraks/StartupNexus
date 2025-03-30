@@ -19,12 +19,22 @@ import (
 
 func setupTestDB() {
 	var err error
-	DB, err = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{}) // In-memory DB
+	DB, err = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to connect to test database: %v", err)
 	}
 
-	err = DB.AutoMigrate(&User{}, &Entrepreneur{}, &Investor{}, &Mentor{}, &Startup{}, &Connection{})
+	err = DB.AutoMigrate(
+		&User{},
+		&Entrepreneur{},
+		&Investor{},
+		&Mentor{},
+		&Startup{},
+		&Connection{},
+		&Comment{},
+		&Like{},
+		&Report{},
+	)
 	if err != nil {
 		log.Fatalf("Failed to migrate test database: %v", err)
 	}
@@ -77,7 +87,7 @@ func TestRequestConnectionHandler(t *testing.T) {
 		assert.Equal(t, http.StatusConflict, rr.Code)
 	})
 
-	t.Run("Invalid Sender Role", func(t *testing.T) {
+	t.Run("Entrepreneur Can Send Connection Request", func(t *testing.T) {
 		DB.Where("email = ?", "charlie@example.com").FirstOrCreate(&User{
 			FullName: "Charlie", Email: "charlie@example.com", Role: "Entrepreneur",
 		})
@@ -90,7 +100,8 @@ func TestRequestConnectionHandler(t *testing.T) {
 
 		app.requestConnectionHandler(rr, req)
 
-		assert.Equal(t, http.StatusForbidden, rr.Code)
+		assert.Equal(t, http.StatusCreated, rr.Code)
+		assert.Contains(t, rr.Body.String(), `"status":"success"`)
 	})
 }
 

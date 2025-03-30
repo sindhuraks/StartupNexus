@@ -59,3 +59,23 @@ type Connection struct {
 	ReceiverID uint   `json:"receiver_id" gorm:"not null"`     // Entrepreneur
 	Status     string `json:"status" gorm:"default:'pending'"` // pending, accepted, rejected
 }
+
+type Like struct {
+	gorm.Model
+	UserID    uint `json:"user_id"`
+	StartupID uint `json:"startup_id"`
+}
+
+type Comment struct {
+	gorm.Model
+	UserID    uint   `json:"user_id"`
+	StartupID uint   `json:"startup_id"`
+	Content   string `json:"content"`
+}
+
+type Report struct {
+	gorm.Model
+	ReporterID uint   `json:"reporter_id"`
+	StartupID  uint   `json:"startup_id"`
+	Reason     string `json:"reason"`
+}

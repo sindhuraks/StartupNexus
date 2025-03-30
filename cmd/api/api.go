@@ -49,6 +49,12 @@ func (app *application) mount() http.Handler {
 		r.Post("/startup/insert", app.insertStartupHandler)
 		r.Put("/startup/update", app.updateStartupHandler)
 		r.Delete("/startup/delete", app.deleteStartupHandler)
+		r.Post("/startup/like", app.likeStartupHandler)
+		r.Delete("/startup/unlike", app.unlikeStartupHandler)
+		r.Get("/startup/likes/{id}", app.getStartupLikesHandler)
+		r.Post("/startup/comment", app.addCommentHandler)
+		r.Get("/startup/comments/{id}", app.getCommentsHandler)
+		r.Post("/startup/report", app.reportStartupHandler)
 
 	})
 
