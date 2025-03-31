@@ -105,7 +105,7 @@ Details fetched when deleting a post:
   "linkedin_profile": "string",
   "verification_proof": "string (optional)",
   
-   Entrepreneur-specific fields
+   "Entrepreneur-specific fields"
   "startup_name": "string (optional)",
   "industry": "string (optional)",
   "description": "string (optional)",
