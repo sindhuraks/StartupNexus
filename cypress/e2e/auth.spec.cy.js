@@ -25,5 +25,10 @@ describe('GitHub Sign-In Test', () => {
     cy.visit('/?callbackUrl=%2F')
 
     cy.wait('@getSession')
+
+    cy.url().should('contain', '/')
+
+    cy.get('button').contains('Start a post').click({ force: true })
+
   }); 
 });
