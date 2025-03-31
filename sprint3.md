@@ -112,12 +112,12 @@ Details fetched when deleting a post:
   "budget": "number (optional)",
   "timeframe": "string (optional)",
   
-   Investor-specific fields
+   "Investor-specific fields"
   "investment_range": "string (optional)",
   "preferred_industries": "string (optional)",
   "experience_years": "number (optional)",
   
-   Mentor-specific fields
+   "Mentor-specific fields"
   "expertise": "string (optional)",
   "past_mentorships": "string (optional)",
   "years_of_experience": "number (optional)"
@@ -163,10 +163,10 @@ Success Response:
 ```json
 {
   "status": "success",
-  "count": number,
+  "count": "number",
   "users": [
     {
-      "id": number,
+      "id": "number",
       "full_name": "string",
       "email": "string",
       "role": "string",
@@ -263,7 +263,7 @@ Success Response:
   "status": "success",
   "connections": [
     {
-      "id": number,
+      "id": "number",
       "name": "string",
       "email": "string",
       "role": "string"
@@ -287,12 +287,12 @@ Success Response:
   "suggestions": [
     {
       "type": "string (investor/mentor/startup)",
-      "id": number,
+      "id": "number",
       "email": "string",
       "name": "string",
       "location": "string",
       "match_reason": "string",
-      "score": number
+      "score": "number"
     }
   ]
 }
@@ -310,16 +310,16 @@ Success Response:
   "status": "success",
   "startups": [
     {
-      "id": number,
+      "id": "number",
       "startup_name": "string",
       "industry": "string",
       "description": "string",
-      "budget": number,
+      "budget": "number",
       "timeframe": "string",
       "created_at": "timestamp",
       "updated_at": "timestamp",
       "entrepreneur": {
-        "id": number,
+        "id": "number",
         "name": "string",
         "email": "string",
         "location": "string"
@@ -342,11 +342,11 @@ Success Response:
   "status": "success",
   "startups": [
     {
-      "id": number,
+      "id": "number",
       "startup_name": "string",
       "industry": "string",
       "description": "string",
-      "budget": number,
+      "budget": "number",
       "timeframe": "string",
       "created_at": "timestamp",
       "updated_at": "timestamp"
@@ -365,7 +365,7 @@ Success Response:
   "startup_name": "string",
   "industry": "string",
   "description": "string",
-  "budget": number,
+  "budget": "number",
   "timeframe": "string"
 }
 ```
@@ -385,11 +385,11 @@ Request Body:
 ```json
 {
   "email": "string",
-  "startup_id": number,
+  "startup_id": "number",
   "startup_name": "string",
   "industry": "string",
   "description": "string",
-  "budget": number,
+  "budget": "number",
   "timeframe": "string"
 }
 ```
@@ -410,7 +410,7 @@ Request Body:
 ```json
 {
   "email": "string",
-  "startup_id": number
+  "startup_id": "number"
 }
 ```
 
