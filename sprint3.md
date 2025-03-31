@@ -105,19 +105,19 @@ Details fetched when deleting a post:
   "linkedin_profile": "string",
   "verification_proof": "string (optional)",
   
-  // Entrepreneur-specific fields
+   Entrepreneur-specific fields
   "startup_name": "string (optional)",
   "industry": "string (optional)",
   "description": "string (optional)",
   "budget": "number (optional)",
   "timeframe": "string (optional)",
   
-  // Investor-specific fields
+   Investor-specific fields
   "investment_range": "string (optional)",
   "preferred_industries": "string (optional)",
   "experience_years": "number (optional)",
   
-  // Mentor-specific fields
+   Mentor-specific fields
   "expertise": "string (optional)",
   "past_mentorships": "string (optional)",
   "years_of_experience": "number (optional)"
@@ -151,7 +151,7 @@ Details fetched when deleting a post:
   "linkedin": "string",
   "verification_status": "string"
 }
-    ```
+```
 
 3. Search Users by Name
 - Endpoint: GET /v1/user/search?name=searchTerm
@@ -161,7 +161,7 @@ name (required)
 
 Success Response:
 ```json
-``{
+{
   "status": "success",
   "count": number,
   "users": [
@@ -188,14 +188,14 @@ Success Response:
   "sender_email": "string",
   "receiver_email": "string"
 }
-    ```
+```
 - Success Response:
 ```json
 {
   "status": "success",
   "message": "Connection request sent from sender@example.com to receiver@example.com"
 }
-    ```
+```
 
 2. Get Pending Connections
 - Endpoint: GET /v1/connection/pending?email=user@example.com
@@ -232,7 +232,7 @@ email (required)
   "status": "success",
   "message": "Connection request [id] accepted"
 }
-    ```
+```
 
 4. Reject Connection
 - Endpoint: DELETE /v1/connection/reject/{id}?email=user@example.com
@@ -249,7 +249,7 @@ Success Response:
   "status": "success",
   "message": "Connection request [id] rejected"
 }
-    ```
+```
 
 5. Get Accepted Connections
 - Endpoint: GET /v1/connection/my?email=user@example.com
@@ -270,7 +270,7 @@ Success Response:
     }
   ]
 }
-    ```
+```
 
 6. Get Connection Suggestions
 - Endpoint: GET /v1/suggestions?email=user@example.com
@@ -296,7 +296,7 @@ Success Response:
     }
   ]
 }
-    ```
+```
 
 ## Startup Management
 
@@ -327,7 +327,7 @@ Success Response:
     }
   ]
 }
-    ```
+```
 
 2. Get Startups by User
 - Endpoint: GET /v1/startup/user?email=user@example.com
@@ -353,7 +353,7 @@ Success Response:
     }
   ]
 }
-    ```
+```
 
 3. Insert Startup
 - Endpoint: POST /v1/startup/insert
@@ -368,7 +368,7 @@ Success Response:
   "budget": number,
   "timeframe": "string"
 }
-    ```
+```
 
 - Success Response:
 ```json
@@ -376,7 +376,7 @@ Success Response:
   "status": "success",
   "message": "Startup inserted successfully"
 }
-    ```
+```
 
 4. Update Startup
 - Endpoint: PUT /v1/startup/update
@@ -392,7 +392,7 @@ Request Body:
   "budget": number,
   "timeframe": "string"
 }
-    ```
+```
 
 - Success Response:
 
@@ -412,7 +412,7 @@ Request Body:
   "email": "string",
   "startup_id": number
 }
-    ```
+```
 
 - Success Response:
 ```json
@@ -420,7 +420,7 @@ Request Body:
   "status": "success",
   "message": "Startup deleted successfully"
 }
-    ```
+```
 
 ### Error Responses
 All endpoints return appropriate HTTP status codes with error messages in the following format:
