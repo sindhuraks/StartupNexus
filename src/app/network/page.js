@@ -56,9 +56,6 @@ export default function Networks({ onBack }) {
 
     return (
         <div className={styles.pageContainer}>
-            <button className={styles.backButton} onClick={onBack}>
-                ← Back to Dashboard
-            </button>
             <h1 className={styles.title}>My Network</h1>
             <div className={styles.connectionsContainer}>
                 {connections.map((connection) => (

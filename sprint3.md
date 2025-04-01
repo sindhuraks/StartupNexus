@@ -6,6 +6,9 @@
 - Frontend and backend integration for Start a post functionalities
 - Layout for View Profile
 - Cypress and unit testing
+- Search feature for searching people 
+- Designed layout for user profile pages
+- Network feature to display my connections
 
 ## What issues your team planned to address
 - Modify Cypress and unit tests completed in Sprint 2, introduction of new unit tests for : rendering all components in the dashboard, Start a post functionality, View Profile.
@@ -13,6 +16,9 @@
 - As an authenticated user, should be able to create a post using Start a post button, view all posts, edit and delete a particular post when Edit or Delete button is clicked. Render a form to allow a user to create a post.
     - Integrate front end and back end for Start a post functionality.
 - As an authenticated user, should be able to view the profile when View Profile button is clicked.
+- Search feature to search for users and user profiles on the platform
+- As a user, I should be able to send connection request to user, accept and reject user connection requests
+- As a user, I should be able to view users in my connection
 
 ## Which ones were successfully completed
 - Successfully tested whether the Start a post button was rendered, the form was rendered when Start a post button was clicked, profile was rendered when View Profile button was clicked, creation, update, delete and display of posts.
@@ -20,6 +26,9 @@
 - Render a form when Start a post button is clicked and enter the details in order to create a post.
 - Integrated front and back end for create, update, display and deletion of posts.
 - Designed basic layout for View Profile and render the page when an authenticated user clicks View Profile and display the Recent Activity.
+- Designed basic layout for user profiles and render user profiles having about, recent activity and experience with connection request
+- Created search bar, and dynamic user profile pages to display searched profiles
+- Created network feature to display users in my connection
 
 Details fetched when creating a post:
 ```
