@@ -474,8 +474,8 @@ id (startup ID)
   "status": "success",
   "comments": [
     {
-      "user_id": number,
-      "startup_id": number,
+      "user_id": "number",
+      "startup_id": "number",
       "content": "string"
     }
   ]
@@ -488,7 +488,7 @@ id (startup ID)
 ```json
 {
   "email": "string",
-  "startup_id": number
+  "startup_id": "number"
 }
 ```
 
@@ -507,7 +507,7 @@ id (startup ID)
 ```json
 {
   "email": "string",
-  "startup_id": number
+  "startup_id": "number"
 }
 ```
 
@@ -529,7 +529,7 @@ id (startup ID)
 ```json
 {
   "status": "success",
-  "like_count": number
+  "like_count": "number"
 }
 ```
 
@@ -540,7 +540,7 @@ id (startup ID)
 ```json
 {
   "email": "string",
-  "startup_id": number,
+  "startup_id": "number",
   "reason": "string"
 }
 ```
@@ -600,26 +600,4 @@ All endpoints return appropriate HTTP status codes with error messages in the fo
 - CORS: Enabled for cross-origin requests
 - Timeout: 60 seconds for requests
 - Supported Methods: GET, POST, PUT, DELETE, OPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
