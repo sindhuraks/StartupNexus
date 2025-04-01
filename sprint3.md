@@ -89,6 +89,26 @@ Details fetched when deleting a post:
 ## Backend Development
 ## API Documentation
 
+## User Stories Implemented
+- As a user, I want to like a startup so I can show interest in it
+- As a user, I want to comment on startups to share my thoughts
+- As a user, I want to report a startup if I find inappropriate content
+- As a user, I want to search for other users by name to find and connect with them
+- As a platform, I want to enable universal connection requests between all roles
+- As a platform, I want to implement intelligent connection suggestions based on user roles and profiles
+- As a platform, I want to display startups in sorted order (newest first)
+
+## What ones were successfully completed 
+- Implemented like/unlike endpoints with duplicate prevention
+- Built comment creation and retrieval system with validation
+- Developed reporting system with duplicate prevention
+- Created case-insensitive partial name search functionality
+- Enabled universal connections between all user roles
+- Implemented suggestion algorithm with role-based matching (100/80/50 scoring)
+- Updated all startup queries to sort by created_at/updated_at
+- Added comprehensive unit tests for all new endpoints
+- Verified search and suggestion logic through testing
+
 
 ## User Management
 1. Signup
@@ -421,6 +441,155 @@ Request Body:
   "message": "Startup deleted successfully"
 }
 ```
+
+## Startup Engagement Features
+1. Add Comment
+- Endpoint: POST /v1/startup/comment
+- Description: Add a comment to a startup
+- Request Body:
+```json
+{
+  "email": "string",
+  "startup_id": "number",
+  "content": "string"
+}
+```
+
+- Success Response:
+```json
+{
+  "status": "success",
+  "message": "Comment added successfully"
+}
+```
+2. Get Comments
+- Endpoint: GET /v1/startup/comments/{id}
+- Description: Get all comments for a startup
+- URL Parameters:
+id (startup ID)
+
+- Success Response:
+```json 
+{
+  "status": "success",
+  "comments": [
+    {
+      "user_id": number,
+      "startup_id": number,
+      "content": "string"
+    }
+  ]
+}
+```
+3. Like Startup
+- Endpoint: POST /v1/startup/like
+- Description: Like a startup
+- Request Body:
+```json
+{
+  "email": "string",
+  "startup_id": number
+}
+```
+
+- Success Response:
+```json
+{
+  "status": "success",
+  "message": "Startup liked successfully"
+}
+```
+
+4. Unlike Startup
+- Endpoint: POST /v1/startup/unlike
+- Description: Remove like from a startup
+- Request Body:
+```json
+{
+  "email": "string",
+  "startup_id": number
+}
+```
+
+- Success Response:
+```json
+{
+  "status": "success",
+  "message": "Startup unliked successfully"
+}
+```
+
+5. Get Like Count
+- Endpoint: GET /v1/startup/likes/{id}
+- Description: Get number of likes for a startup
+- URL Parameters:
+id (startup ID)
+
+- Success Response:
+```json
+{
+  "status": "success",
+  "like_count": number
+}
+```
+
+6. Report Startup
+- Endpoint: POST /v1/startup/report
+- Description: Report a startup for inappropriate content
+- Request Body:
+```json
+{
+  "email": "string",
+  "startup_id": number,
+  "reason": "string"
+}
+```
+- Success Responses:
+```json
+{
+  "status": "success",
+  "message": "Report submitted successfully"
+}
+```
+
+```json
+{
+  "status": "success",
+  "message": "Startup has been removed"
+}
+```
+
+- Error Response:
+```json
+{
+  "status": "error",
+  "message": "You have already reported this startup"
+}
+```
+
+## Backend Unit Tests
+
+1. Comments Feature
+- Add Comment (Success, Invalid Payload, User Not Found)
+- Get Comments by Startup ID (Valid ID, Invalid ID)
+
+2. Likes Feature
+- Like Startup (Success, Already Liked, Invalid Payload)
+- Unlike Startup (Success, Invalid Payload)
+- Get Like Count (Correct Count Retrieval)
+
+3. Reports Feature
+- Submit Report (Success, Duplicate Report, Auto-Delete After 5 Reports, Invalid Payload, User Not Found)
+
+4. Startup Feature
+- Insert Startup (Success, User Not Found)
+- Get All Startups
+- Get Startups by User (Valid User, User Not Found)
+- Update Startup
+- Delete Startup (Success, Not Owner)
+
+5. Suggestions Feature
+- Get Suggestions Handler (Missing Email, User Not Found, Invalid Role, Valid Entrepreneur Suggestions)
 
 ### Error Responses
 All endpoints return appropriate HTTP status codes with error messages in the following format:
