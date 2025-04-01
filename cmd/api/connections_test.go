@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -13,34 +12,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
-
-func setupTestDB() {
-	var err error
-	DB, err = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
-	if err != nil {
-		log.Fatalf("Failed to connect to test database: %v", err)
-	}
-
-	err = DB.AutoMigrate(
-		&User{},
-		&Entrepreneur{},
-		&Investor{},
-		&Mentor{},
-		&Startup{},
-		&Connection{},
-		&Comment{},
-		&Like{},
-		&Report{},
-	)
-	if err != nil {
-		log.Fatalf("Failed to migrate test database: %v", err)
-	}
-
-	fmt.Println("Test database initialized successfully!")
-}
 
 // Ensure database setup before running all tests in this file
 func TestMain(m *testing.M) {
