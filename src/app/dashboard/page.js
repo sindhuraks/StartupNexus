@@ -30,6 +30,8 @@ export default function Dashboard() {
         "Robotics and Automation", "Online Education/Skill Development", "Personalized Nutrition/Wellness"
     ];
     const [showViewProfilePage, setShowViewProfilePage] = useState(false);
+    const [likedPosts, setLikedPosts] = useState(new Set());
+    const [likeCounts, setLikeCounts] = useState({});
 
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev);
@@ -217,6 +219,87 @@ export default function Dashboard() {
         fetchPosts();
     };
 
+    const handleLike = async (startupId) => {
+        const isLiked = likedPosts.has(startupId);
+        const currentCount = likeCounts[startupId] || 0;
+      
+        // Prevent unliking if like count is already 0 or less
+        if (isLiked && currentCount < 0) return;
+      
+        const endpoint = isLiked ? 'unlike' : 'like';
+        const method = isLiked ? 'DELETE' : 'POST';
+      
+        try {
+          const response = await fetch(`http://localhost:8080/v1/startup/${endpoint}`, {
+            method: method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: session?.user?.email, // user email from session
+              startup_id: startupId
+            }),
+          });
+      
+          const data = await response.json();
+      
+          if (response.ok && data.status === "success") {
+            // Update liked posts set
+            if (session?.user?.email) {
+                setLikedPosts((prev) => {
+                const updated = new Set(prev);
+                if (isLiked) {
+                    updated.delete(startupId);
+                } else {
+                    updated.add(startupId);
+                }
+                localStorage.setItem("likedPosts", JSON.stringify(Array.from(updated)));
+                return updated;
+                });
+        
+                // Update like count
+                setLikeCounts((prevCounts) => ({
+                ...prevCounts,
+                [startupId]: Math.max(0, (prevCounts[startupId] || 0) + (isLiked ? -1 : 1)),
+                }));
+            }
+          } else {
+            alert(data.message || `Failed to ${endpoint} post.`);
+          }
+        } catch (error) {
+          console.error(`Error trying to ${endpoint} post:`, error);
+        }
+      };
+            
+    const fetchLikeCounts = async () => {
+        const counts = {};
+        for (const post of posts) {
+          try {
+            const response = await fetch(`http://localhost:8080/v1/startup/likes/${post.id}`);
+            const data = await response.json();
+            if (response.ok && data.status === "success") {
+              counts[post.id] = data.like_count;
+            } else {
+              counts[post.id] = 0;
+            }
+          } catch {
+            counts[post.id] = 0;
+          }
+        }
+        setLikeCounts(counts);
+    };
+
+    useEffect(() => {
+        const stored = localStorage.getItem("likedPosts");
+        if (stored) {
+          setLikedPosts(new Set(JSON.parse(stored)));
+        }
+      }, []);
+
+    useEffect(() => {
+        if (posts.length > 0) {
+          fetchLikeCounts();
+        }
+      }, [posts]);
+    
     return (   
         <div>
             <div className={styles.horizontalbar}>
@@ -396,7 +479,17 @@ export default function Dashboard() {
                                                     <p className={styles.postStyle}>Timeframe: {post.timeframe}</p>
                                                     <hr className={styles.separator}></hr>
                                                     <div className={styles.buttonContainer}>
-                                                        <button className={styles.likeButton}>Like</button>
+                                                        <div className={styles.likeWrapper}>
+                                                            <div className={styles.likeCount}>
+                                                            {likeCounts[post.id] !== undefined ? `${likeCounts[post.id]} Like(s)` : "Loading..."}
+                                                            </div>
+                                                            <button
+                                                            className={`${styles.likeButton} ${likedPosts.has(post.id) ? styles.liked : styles.likeButton}`}
+                                                            onClick={() => handleLike(post.id)}
+                                                            >
+                                                            Like
+                                                            </button>
+                                                        </div>
                                                         <button className={styles.commentButton}>Comment</button>
                                                     </div>
                                                     </>
