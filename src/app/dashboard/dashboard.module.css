@@ -490,3 +490,22 @@
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size: 13px;
 }
+
+.liked {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+.likeWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%; /* matches button width for consistency */
+}
+
+.likeCount {
+  font-size: 13px;
+  color: #ffffff;
+  margin-bottom: 4px; /* spacing between count and Like button */
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
