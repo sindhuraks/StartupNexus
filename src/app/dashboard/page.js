@@ -3,7 +3,7 @@ import styles from "./dashboard.module.css";
 import { useEffect, useState } from "react";
 import NewsFeed from "./newsfeed";
 import { useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import UserProfile from "../user-profile/page";
 import Networks from "../network/page";
 import moment from "moment/moment";
@@ -258,7 +258,7 @@ export default function Dashboard() {
                     {isDropdownVisible && (
                         <div className={styles.dropdownMenu}>
                             <button className={styles.dropdownItem} onClick={handleViewProfileClick}>View Profile</button>
-                            <button className={styles.dropdownItem}>Sign Out</button>
+                            <button className={styles.dropdownItem} onClick={() => signOut({ callbackUrl: "/" })}>Sign Out</button>
                         </div>
                     )}
                 </div>
