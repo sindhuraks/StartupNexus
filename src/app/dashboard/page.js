@@ -32,6 +32,13 @@ export default function Dashboard() {
     const [showViewProfilePage, setShowViewProfilePage] = useState(false);
     const [likedPosts, setLikedPosts] = useState(new Set());
     const [likeCounts, setLikeCounts] = useState({});
+    const [commentText, setCommentText] = useState('');
+    const [comments, setComments] = useState({});
+    const [openCommentPostId, setOpenCommentPostId] = useState(null);
+    const [commentCounts, setCommentCounts] = useState({});
+    const [visibleCommentsPostId, setVisibleCommentsPostId] = useState(null);
+    const [reportModalPostId, setReportModalPostId] = useState(null);
+    const [reportReason, setReportReason] = useState('');
 
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev);
@@ -217,6 +224,7 @@ export default function Dashboard() {
         setShowNetworksPage(false);
         setSelectedUser(null);
         fetchPosts();
+        fetchComments();
     };
 
     const handleLike = async (startupId) => {
@@ -287,6 +295,24 @@ export default function Dashboard() {
         setLikeCounts(counts);
     };
 
+    const fetchCommentCounts = async () => {
+        const counts = {};
+        for (const post of posts) {
+          try {
+            const response = await fetch(`http://localhost:8080/v1/startup/comments/${post.id}`);
+            const data = await response.json();
+            if (response.ok && data.status === "success") {
+              counts[post.id] = data.comments.length;
+            } else {
+              counts[post.id] = 0;
+            }
+          } catch {
+            counts[post.id] = 0;
+          }
+        }
+        setCommentCounts(counts);
+      };
+
     useEffect(() => {
         const stored = localStorage.getItem("likedPosts");
         if (stored) {
@@ -297,9 +323,94 @@ export default function Dashboard() {
     useEffect(() => {
         if (posts.length > 0) {
           fetchLikeCounts();
+          fetchCommentCounts();
         }
       }, [posts]);
     
+      const handleCommentClick = (postId) => {
+        //setSelectedPostId(postId === selectedPostId ? null : postId);
+        setOpenCommentPostId(openCommentPostId === postId ? null : postId);
+      };
+      
+      const handleCommentSubmit = async (postId) => {
+        if (!commentText.trim()) return;
+      
+        try {
+          const response = await fetch('http://localhost:8080/v1/startup/comment', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: session?.user?.email,
+              startup_id: postId,
+              content: commentText
+            }),
+          });
+      
+          const data = await response.json();
+          if (response.ok && data.status === "success") {
+            setCommentText('');
+            fetchComments(postId); // Refresh comments
+          } else {
+            alert(data.message || "Failed to post comment");
+          }
+        } catch (error) {
+          console.error("Error posting comment:", error);
+        }
+      };
+      
+    const fetchComments = async (postId) => {
+        try {
+          const response = await fetch(`http://localhost:8080/v1/startup/comments/${postId}`);
+          const data = await response.json();
+          if (response.ok && data.status === "success") {
+            setComments(prev => ({
+              ...prev,
+              [postId]: data.comments
+            }));
+          }
+        } catch (error) {
+          console.error("Error fetching comments:", error);
+        }
+    };
+
+    const handleShowComments = (postId) => {
+        setVisibleCommentsPostId(visibleCommentsPostId === postId ? null : postId);
+        if (!comments[postId]) fetchComments(postId); // Fetch if not cached
+    };
+
+    const handleReportSubmit = async () => {
+        if (!reportReason.trim()) {
+          alert("Please provide a reason for reporting.");
+          return;
+        }
+      
+        try {
+          const response = await fetch('http://localhost:8080/v1/startup/report', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: session?.user?.email,
+              startup_id: reportModalPostId,
+              reason: reportReason
+            }),
+          });
+      
+          const data = await response.json();
+          if (response.ok && data.status === "success") {
+            alert(data.message);
+            setReportModalPostId(null);
+            setReportReason('');
+            fetchPosts(); // Refresh posts if a startup was deleted
+          } else {
+            alert(data.message || "Failed to submit report");
+          }
+        } catch (error) {
+          console.error("Error submitting report:", error);
+          alert("Error submitting report");
+        }
+      };
+      
+
     return (   
         <div>
             <div className={styles.horizontalbar}>
@@ -405,8 +516,46 @@ export default function Dashboard() {
                                                                 <path d="M5 6h14l-1 14H6Z"/>
                                                             </svg>
                                                             Delete</button>
+                                                        <button className={styles.optionButton} onClick={() => setReportModalPostId(post.id)}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                                                            <line x1="12" y1="9" x2="12" y2="13"/>
+                                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                                            </svg>
+                                                            Report</button>
                                                     </div>
                                                 )}
+                                                {reportModalPostId && (
+                                                    <div className={styles.reportOverlay}>
+                                                        <div className={styles.reportContent}>
+                                                        <h3>Report this post</h3><br></br>
+                                                        <textarea
+                                                            value={reportReason}
+                                                            onChange={(e) => setReportReason(e.target.value)}
+                                                            placeholder="Please specify the reason for reporting..."
+                                                            rows={4}
+                                                            className={styles.reportText}
+                                                        />
+                                                        <div className={styles.reportActions}>
+                                                            <button 
+                                                            onClick={() => handleReportSubmit(reportModalPostId)}
+                                                            disabled={!reportReason.trim()}
+                                                            className={styles.reportButton}
+                                                            >
+                                                            Submit
+                                                            </button>
+                                                            <button onClick={() => {
+                                                            setReportModalPostId(null);
+                                                            setReportReason('');
+                                                            }}
+                                                            className={styles.reportButton}>
+                                                            Cancel
+                                                            </button>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    )}
+
                                                 {editingPostId === post.id ? (
                                                     <>
                                                         <div className={styles.editPost}>
@@ -490,8 +639,45 @@ export default function Dashboard() {
                                                             Like
                                                             </button>
                                                         </div>
-                                                        <button className={styles.commentButton}>Comment</button>
+                                                        <div className={styles.likeWrapper}>
+                                                            <div className={styles.likeCount}>
+                                                            <button 
+                                                                onClick={() => handleShowComments(post.id)}
+                                                                className={styles.commentCountButton}
+                                                                >
+                                                                {commentCounts[post.id] || 0} Comment(s)
+                                                                </button>
+                                                            </div>
+                                                            <button className={styles.commentButton} onClick={() => handleCommentClick(post.id)}>Comment</button>
+                                                        </div>
                                                     </div>
+                                                    {openCommentPostId === post.id && (
+                                                        <div className={styles.commentSection}>
+                                                            <textarea
+                                                                value={commentText}
+                                                                onChange={(e) => setCommentText(e.target.value)}
+                                                                onKeyDown={(e) => {
+                                                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                                                    e.preventDefault();
+                                                                    handleCommentSubmit(post.id);
+                                                                    }
+                                                                }}
+                                                                placeholder="Add a comment..."
+                                                                className={styles.commentInput}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                    {visibleCommentsPostId === post.id && comments[post.id] && (
+                                                        <div>
+                                                            {comments[post.id]?.map((comment) => (
+                                                            <div key={comment.id} className={styles.comment}>
+                                                                <strong>{comment.user_name}</strong><br></br>
+                                                                <span className={styles.timeDisplay}>{moment(comment.created_at).fromNow()}</span>
+                                                                <p>{comment.content}</p>
+                                                            </div>
+                                                        ))}
+                                                        </div>
+                                                    )}    
                                                     </>
                                                 )}
                                             </div>
