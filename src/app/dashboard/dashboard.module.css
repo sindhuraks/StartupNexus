@@ -139,12 +139,19 @@
   flex-direction: column;
   align-items: center;
   margin-top: 20px;*/
+  /*width: calc(75% - 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  height: calc(100vh - 35px);*/
   width: calc(75% - 20px);
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-  height: calc(100vh - 35px);
+  height: auto;
+  min-height: 0;
 }
 
 .startPostSection {
@@ -175,9 +182,17 @@
 }
 
 .displayPostSection {
-  overflow-y: auto;
+  /*overflow-y: auto;
   width: 100%;
   height: 100%;
+  padding-top: 40px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  gap: 10px;*/
+  overflow-y: auto;
+  scrollbar-width: none;
+  width: 100%;
+  max-height: calc(100vh - 190px); /* Adjust this value as needed for your header/nav */
   padding-top: 40px;
   padding-left: 20px;
   padding-bottom: 20px;
@@ -332,10 +347,11 @@
 }
 
 .post {
+  position: relative;
   padding: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 .moreOptionsButton {
@@ -362,7 +378,7 @@
   width: 120px;
   padding: 5px 0;
   z-index: 10;
-  margin-right: 345px;
+  margin-right: 5px;
   margin-top: 16px;
   cursor: pointer;
 }
@@ -508,4 +524,105 @@
   color: #ffffff;
   margin-bottom: 4px; /* spacing between count and Like button */
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.commentSection {
+  margin-top: 0.5rem;
+}
+
+.commentInput {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.comment {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.timeDisplay {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 10px;
+}
+
+.commentCountButton {
+  margin-top: 0;
+  background: none;
+  border-radius: 0%;
+  font-size: 12px;
+  padding-top: 1px;
+  box-shadow: none;
+  border: none;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  cursor: pointer;
+  padding-top: 1px;
+  padding-bottom: 0px;
+}
+
+.commentCountButton:hover {
+  color: #00ff88;
+}
+
+.reportOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.reportContent {
+  background: linear-gradient(
+      to bottom,
+      hsl(155, 59%, 43%) 0%,
+      #0D4D3E 5%, 
+      #072239 35%, 
+      #072239 65%
+    );
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.reportActions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.reportButton {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  box-shadow: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.reportText {
+  background-color: transparent;
+  border-color: #ffffff;
+  width: 450px;
+  height: 30px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.reportText::placeholder {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  padding: 5px;
 }
