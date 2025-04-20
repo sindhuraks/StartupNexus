@@ -8,12 +8,26 @@ const DUMMY_USERS = [
   { id: 3, name: 'Alice Johnson', title: 'UI/UX Designer' }
 ];
 
+// Example initial messages per user
+const INITIAL_MESSAGES = {
+  1: [
+    { id: 1, text: 'Hey John, ready for our meeting?', sent: true, time: '2h' },
+    { id: 2, text: 'Absolutely! See you then.', sent: false, time: '1h' },
+  ],
+  2: [
+    { id: 1, text: 'Hi Jane, did you review the PR?', sent: true, time: '3h' },
+    { id: 2, text: 'Yes, looks good to me!', sent: false, time: '2h' },
+  ],
+  3: [
+    { id: 1, text: 'Alice, can you share the new designs?', sent: true, time: '4h' },
+    { id: 2, text: 'Sure, sending them now!', sent: false, time: '3h' },
+  ]
+};
+
 export default function Message() {
+  const [messages, setMessages] = useState(INITIAL_MESSAGES);
+  const [selectedUserId, setSelectedUserId] = useState(DUMMY_USERS[0].id);
   const [newMessage, setNewMessage] = useState('');
-  const [messages, setMessages] = useState([
-    { id: 1, text: 'Hey, ready for our meeting?', sent: false, time: '2h' },
-    { id: 2, text: 'Absolutely! See you then.', sent: true, time: '1h' }
-  ]);
   const [showComposeModal, setShowComposeModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRecipient, setSelectedRecipient] = useState(null);
@@ -26,18 +40,29 @@ export default function Message() {
   );
 
   const handleSend = () => {
-    if (newMessage.trim()) {
-      setMessages([
-        ...messages,
-        {
-          id: Date.now(),
-          text: newMessage,
-          sent: true,
-          time: 'now'
-        }
-      ]);
+    if (newMessage.trim() && selectedUserId) {
+      setMessages(prev => ({
+        ...prev,
+        [selectedUserId]: [
+          ...(prev[selectedUserId] || []),
+          {
+            id: Date.now(),
+            text: newMessage,
+            sent: true,
+            time: 'now'
+          }
+        ]
+      }));
       setNewMessage('');
     }
+  };
+
+  const handleSelectConversation = (userId) => {
+    setSelectedUserId(userId);
+    setShowComposeModal(false);
+    setSelectedRecipient(null);
+    setSearchQuery('');
+    setNewMessage('');
   };
 
   const handleCompose = () => {
@@ -51,6 +76,9 @@ export default function Message() {
     setSelectedRecipient(user);
     setSearchQuery('');
   };
+
+  // Messages for the currently selected chat
+  const currentMessages = messages[selectedUserId] || [];
 
   return (
     <div className={styles.messagingContainer}>
@@ -83,7 +111,7 @@ export default function Message() {
                   <div
                     key={user.id}
                     className={styles.searchResultItem}
-                    onClick={() => handleSelectRecipient(user)}
+                    onClick={() => handleSelectConversation(user.id)}
                   >
                     <div className={styles.conversationAvatar}>
                       {user.name[0]}
@@ -100,9 +128,13 @@ export default function Message() {
             </div>
           )}
         </div>
-        {/* Dummy conversation items */}
+        {/* Conversation items */}
         {DUMMY_USERS.map(user => (
-          <div key={user.id} className={styles.conversationItem}>
+          <div
+            key={user.id}
+            className={`${styles.conversationItem} ${user.id === selectedUserId ? styles.activeConversation : ''}`}
+            onClick={() => handleSelectConversation(user.id)}
+          >
             <div className={styles.conversationAvatar}>{user.name[0]}</div>
             <div>
               <h3>{user.name}</h3>
@@ -115,7 +147,7 @@ export default function Message() {
       {/* Chat Window */}
       <div className={styles.chatWindow}>
         <div className={styles.messageContainer}>
-          {messages.map(msg => (
+          {currentMessages.map(msg => (
             <div
               key={msg.id}
               className={`${styles.message} ${msg.sent ? styles.sent : styles.received}`}
@@ -189,15 +221,19 @@ export default function Message() {
                 onClick={() => {
                   if (selectedRecipient && newMessage.trim()) {
                     setShowComposeModal(false);
-                    setMessages([
-                      ...messages,
-                      {
-                        id: Date.now(),
-                        text: newMessage,
-                        sent: true,
-                        time: 'now'
-                      }
-                    ]);
+                    setMessages(prev => ({
+                      ...prev,
+                      [selectedRecipient.id]: [
+                        ...(prev[selectedRecipient.id] || []),
+                        {
+                          id: Date.now(),
+                          text: newMessage,
+                          sent: true,
+                          time: 'now'
+                        }
+                      ]
+                    }));
+                    setSelectedUserId(selectedRecipient.id);
                     setNewMessage('');
                     setSelectedRecipient(null);
                   }
