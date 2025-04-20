@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import { useSession, signOut } from "next-auth/react";
 import UserProfile from "../user-profile/page";
 import Networks from "../network/page";
+import Message from "../message/page";
 import moment from "moment/moment";
 import ViewProfile from "../view-profile/page";
-
 export default function Dashboard() {
 
     const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -22,6 +22,7 @@ export default function Dashboard() {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null); 
     const [showNetworksPage, setShowNetworksPage] = useState(false);
+    const [showMessagingPage, setShowMessagingPage] = useState(false);
     const [editingPostId, setEditingPostId] = useState(null);
     const [editedPostData, setEditedPostData] = useState({});
     const industries = [
@@ -86,6 +87,13 @@ export default function Dashboard() {
         setSelectedUser(null); // Clear selected user if any
         setShowViewProfilePage(false); // Reset view profile page
     };
+
+    const handleMessagingClick = () => {
+        setShowMessagingPage(true);
+        setShowNetworksPage(false);
+        setSelectedUser(null);
+        setShowViewProfilePage(false);
+      };
 
     const toggleIndustry = (industry) => {
         setSelectedIndustries((prev) =>
@@ -429,12 +437,12 @@ export default function Dashboard() {
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="#00DC82"/>
                         </svg>
                         Home</button>
-                    <button className={`${styles.navItem} ${styles.active}`} onClick={handleMyNetworkClick} >
+                    <button className={`${styles.navItem} ${styles.active}`} onClick={handleMyNetworkClick}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M12 12c2.7 0 5-2.3 5-5-2.3-5-5-5-5 0s2.3 5 5 5zm0 2c-3.9 0-7.2 2.1-9 5.2V22h18v-2.8c-1.8-3.1-5.1-5.2-9-5.2z" fill="#00DC82"/>
                     </svg>
                         My Network</button>
-                        <button className={`${styles.navItem} ${styles.active}`}>
+                        <button className={`${styles.navItem} ${styles.active}`} onClick={handleMessagingClick}>
                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#00DC82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-message">
                             <path stroke="none" d="M0 0h20v20H0z" fill="none"/>
                             <path d="M8 9h8"/>
@@ -478,6 +486,8 @@ export default function Dashboard() {
                 <ViewProfile />
             ) : showNetworksPage ? (
                 <Networks />
+            ) : showMessagingPage ? (
+                <Message />
             ) : (
                 <>
                 {/* Render UserProfile or NewsFeed */}
