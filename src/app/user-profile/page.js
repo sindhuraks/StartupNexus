@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react"; // Import session hook
 import styles from "./user-profile.module.css";
+import Message from "../message/page";
 
 export default function UserProfile({ user }) {
     const [userData, setUserData] = useState(null);
@@ -10,6 +11,7 @@ export default function UserProfile({ user }) {
     const [loading, setLoading] = useState(true);
     const [infoBoxMessage, setInfoBoxMessage] = useState(""); // State for info box message
     const { data: session } = useSession(); // Get session data
+    const [showMessagingPage, setShowMessagingPage] = useState(false);
 
     useEffect(() => {
         if (!user) return;
@@ -88,9 +90,19 @@ export default function UserProfile({ user }) {
     };
 
     const handleMessageClick = () => {
-        alert(`Opening message dialog with ${user.full_name}`);
+        // alert(`Opening message dialog with ${user.full_name}`);
         // Add backend API call for messaging functionality here
+        setShowMessagingPage(true);
     };
+
+    if (showMessagingPage) {
+        return (
+            <Message
+                recipient={userData}
+                onClose={() => setShowMessagingPage(false)}
+            />
+        );
+    }
 
     if (loading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>Error: {error}</div>;

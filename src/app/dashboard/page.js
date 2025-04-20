@@ -439,16 +439,14 @@ export default function Dashboard() {
                         </svg>
                         Home</button>
                     <button className={`${styles.navItem} ${styles.active}`} onClick={handleMyNetworkClick}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M12 12c2.7 0 5-2.3 5-5-2.3-5-5-5-5 0s2.3 5 5 5zm0 2c-3.9 0-7.2 2.1-9 5.2V22h18v-2.8c-1.8-3.1-5.1-5.2-9-5.2z" fill="#00DC82"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00DC82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="7" r="4" />
+                    <path d="M5.5 21a8.38 8.38 0 0 1 13 0" />
                     </svg>
                         My Network</button>
                         <button className={`${styles.navItem} ${styles.active}`} onClick={handleMessagingClick}>
-                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#00DC82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-message">
-                            <path stroke="none" d="M0 0h20v20H0z" fill="none"/>
-                            <path d="M8 9h8"/>
-                            <path d="M8 13h6"/>
-                            <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00DC82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                         </svg>
                         Messaging</button>
                 </nav>
