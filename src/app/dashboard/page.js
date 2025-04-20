@@ -230,6 +230,7 @@ export default function Dashboard() {
     const handleHomeClick = () => {
         setShowViewProfilePage(false);
         setShowNetworksPage(false);
+        setShowMessagingPage(false);
         setSelectedUser(null);
         fetchPosts();
         fetchComments();
