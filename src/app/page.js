@@ -28,6 +28,10 @@ export default function Home() {
     }
   }, [session]);
 
+  if (session && !needsSignup) {
+    return <Dashboard />;
+  }
+
   return (
     <div>
       {/* Render Dashboard if the session is active, outside the rightSection */}
