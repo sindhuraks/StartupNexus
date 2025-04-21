@@ -1,86 +1,220 @@
+/* network.module.css */
+
 /* Full-page container */
-.pageContainer {
-    padding: 24px;
+.networkPage {
+    min-height: 100vh;
+    padding: 32px 0;
     background: linear-gradient(to bottom, hsl(155, 59%, 43%) 0%, #0D4D3E 5%, #072239 35%, #072239 100%);
     color: #eeeeee;
-    min-height: 100vh;
-}
-
-/* Back button styling */
-.backButton {
-    background-color: transparent;
-    color: #00DC82;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.backButton:hover {
-    text-decoration: underline;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Title styling */
 .title {
-    font-size: 32px;
+    font-size: 2.2rem;
     font-weight: bold;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
+    color: #00DC82;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 12px #000a;
 }
 
-/* Connections container */
-.connectionsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+/* List container */
+.list {
+    width: 100%;
+    max-width: 560px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: transparent;
 }
 
-/* Individual connection card */
-.connectionCard {
-    background-color: rgba(2, 4, 32, 0.85);
-    color: #eeeeee;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: rgba(0, 128, 128, 0.25) 0px 4px;
+/* Section titles */
+.listSectionTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 18px 28px 6px 28px;
+    color: #00DC82;
+    background: none;
+    letter-spacing: 0.5px;
+}
+
+/* Card style for each item */
+.listItem {
     display: flex;
     align-items: center;
-    gap: 16px;
-    width: calc(33.333% - 16px); /* Three cards per row */
+    gap: 18px;
+    background: rgba(2, 4, 32, 0.85);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px 0 rgba(0, 220, 130, 0.08);
+    padding: 18px 28px;
+    margin-bottom: 18px;
+    transition: box-shadow 0.18s, transform 0.18s;
+}
+
+.listItem:hover {
+    box-shadow: 0 8px 32px 0 rgba(0, 220, 130, 0.18);
+    transform: translateY(-2px) scale(1.01);
 }
 
 /* Profile picture styling */
-.profilePicture img {
-    width: 80px;
-    height: 80px;
+.profilePic {
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #00DC82;
+    background: #222;
 }
 
-/* Connection info styling */
-.connectionInfo h2 {
-    font-size: 18px;
-    font-weight: bold;
+/* Info block */
+.infoBlock {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.connectionInfo p {
-    font-size: 14px;
+.name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #eeeeee;
+}
+
+.role {
+    font-size: 1rem;
+    color: #b6ffc8;
+}
+
+.location {
+    font-size: 0.95rem;
+    color: #7fe6c3;
 }
 
 .linkedinLink {
     color: #00DC82;
+    font-size: 0.97rem;
     text-decoration: none;
+    margin-top: 4px;
+    transition: color 0.2s;
+    font-weight: 500;
 }
 
 .linkedinLink:hover {
+    color: #1de9b6;
     text-decoration: underline;
 }
 
+/* Actions (buttons) */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-left: 8px;
+}
+
+.acceptButton,
+.ignoreButton,
+.removeButton {
+    font-size: 0.98rem;
+    font-weight: 500;
+    padding: 7px 18px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    margin-bottom: 2px;
+}
+
+.acceptButton {
+    background: linear-gradient(90deg, #00DC82 0%, #1de9b6 100%);
+    color: #072239;
+    box-shadow: 0 2px 8px #00dc8233;
+}
+
+.acceptButton:hover {
+    background: linear-gradient(90deg, #1de9b6 0%, #00DC82 100%);
+    color: #072239;
+}
+
+.ignoreButton {
+    background: transparent;
+    color: #eee;
+    cursor: pointer;
+    border: 1px solid #00DC827a;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  
+  .ignoreButton:hover {
+    border-color: #00DC82;
+    color: #00DC82;
+  }
+
+.removeButton {
+    background: #072239;
+    color: #00DC82;
+    border: 1px solid #00DC827a;
+}
+
+.removeButton:hover {
+    background: #00DC82;
+    color: #072239;
+}
+
+/* Empty state */
+.noRequests,
+.noConnections {
+    text-align: center;
+    color: #b6ffc8;
+    padding: 20px 0 8px 0;
+    font-size: 1.08rem;
+    letter-spacing: 0.2px;
+}
+
+/* Loading & Error */
+.loading {
+    color: #00DC82;
+    font-size: 1.15rem;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.error {
+    color: #ffb7b7;
+    font-size: 1.15rem;
+    text-align: center;
+    margin-top: 60px;
+}
+
 /* Responsive Design */
-@media (max-width: 768px) {
-    .connectionCard {
-        width: calc(50% - 16px); /* Two cards per row on smaller screens */
+@media (max-width: 700px) {
+    .list {
+        max-width: 98vw;
+    }
+    .listItem {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 14px;
+        gap: 10px;
+    }
+    .profilePic {
+        width: 60px;
+        height: 60px;
     }
 }
 
 @media (max-width: 480px) {
-    .connectionCard {
-        width: calc(100% - 16px); /* One card per row on very small screens */
+    .title {
+        font-size: 1.4rem;
+    }
+    .listItem {
+        padding: 12px 6px;
+    }
+    .profilePic {
+        width: 48px;
+        height: 48px;
     }
 }
