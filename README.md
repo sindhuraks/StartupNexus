@@ -23,8 +23,16 @@
 Steps to get the development environment running:
 - Clone/download the repository.
 - Navigate to StartupNexus directory. Run the `npm install` command. This will download all the dependencies listed in package.json file(You need to install depedencies only once).
-- Run `npm run dev` to start the Nextjs project and navigate to http://localhost:3000/.
-- Navigate to cmd/api directory and run `go run *.go` (ignore the test files) to start the server on port 8080.
+- Run 
+```bash
+npm run dev
+```
+to start the Nextjs project and navigate to http://localhost:3000/.
+- Navigate to cmd/api directory and run 
+```bash
+go run *.go
+```
+(ignore the test files) to start the server on port 8080.
 
 ### Backend Live Reloading (Optional - Recommended for Development)
 We recommend using the air package for live-reloading during Go backend development. This tool automatically rebuilds and restarts your Go server whenever you modify your code, providing a smoother development experience.
