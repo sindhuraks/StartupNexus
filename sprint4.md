@@ -596,8 +596,8 @@ id (startup ID)
 1. Send Message
 - Endpoint: POST /v1/message/send
 - Description: Send a message to a user you are connected with
-```json
 - Request Body:
+```json
 {
   "sender_email": "johndoe@example.com",
   "receiver_email": "emmawatson@example.com",
