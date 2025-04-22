@@ -25,11 +25,11 @@ func (app *application) likeStartupHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	var existing Like
-	if err := DB.Where("user_id = ? AND startup_id = ?", user.ID, req.StartupID).First(&existing).Error; err == nil {
-		jsonError(w, http.StatusConflict, "Already liked")
-		return
-	}
+	// var existing Like
+	// if err := DB.Where("user_id = ? AND startup_id = ?", user.ID, req.StartupID).First(&existing).Error; err == nil {
+	// 	jsonError(w, http.StatusConflict, "Already liked")
+	// 	return
+	// }
 
 	like := Like{
 		UserID:    user.ID,
